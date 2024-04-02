@@ -1,1 +1,23 @@
-<p>register works!</p>
+<div class="container">
+  <mat-card class="register-card">
+    <mat-card-content>
+      <form class="register-form">
+        <h1 class="form-title">Register</h1>
+        <mat-form-field class="input-field">
+          <mat-label>Username</mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field class="input-field">
+          <mat-label>Email</mat-label>
+          <input matInput>
+        </mat-form-field>
+        <mat-form-field class="input-field">
+          <mat-label>Password</mat-label>
+          <input matInput type="password">
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="submit-btn" routerLink="/project" type="button">Sign Up</button>
+        <a routerLink="/login" class="mt-4 hover:opacity-70 transition-opacity">Have an account?</a>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

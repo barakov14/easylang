@@ -7,19 +7,13 @@ export class LocalStorageJwtService {
     return localStorage.getItem('jwtToken') || null
   }
 
-  getUuid(): string | null {
-    return localStorage.getItem('uuid') || null
-  }
-
-  setItem(data: string, uuid: string): string {
+  setItem(data: string): string {
     localStorage.setItem('jwtToken', data)
-    localStorage.setItem('uuid', uuid)
     return data
   }
 
   removeItem(): boolean {
     localStorage.removeItem('jwtToken')
-    localStorage.removeItem('uuid')
     return true
   }
 }
