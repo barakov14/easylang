@@ -1,5 +1,5 @@
 export const environment = {
-  api_url: 'https://x8ki-letl-twmt.n7.xano.io/api:RaqAbOVN',
+  api_url: 'http://127.0.0.1:5005',
 };
 
 

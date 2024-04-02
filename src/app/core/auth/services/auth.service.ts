@@ -12,8 +12,7 @@ export class AuthService {
   private readonly apiService = inject(ApiService)
   private readonly router = inject(Router)
 
-
-  login(data: LoginRequest): Observable<AuthResponse | void>  {
+  public login(data: LoginRequest): Observable<AuthResponse | void> {
     return this.apiService.post<AuthResponse, LoginRequest>('/login', data).pipe(
       map((res) => {
         this.router.navigateByUrl('/project')
@@ -23,7 +22,7 @@ export class AuthService {
     )
   }
 
-  register(data: RegisterRequest): Observable<AuthResponse | void> {
+  public register(data: RegisterRequest): Observable<AuthResponse | void> {
     return this.apiService.post<AuthResponse, LoginRequest>('/login', data).pipe(
       map((res) => {
         this.router.navigateByUrl('/project')
