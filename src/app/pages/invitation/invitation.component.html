@@ -1,1 +1,20 @@
-<p>invitation works!</p>
+<div class="h-screen flex justify-center items-center flex-col">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="flex flex-col">
+    <h1>Get invitation code</h1>
+    <mat-form-field>
+      <mat-select formControlName="role">
+        <mat-option value="manager">Manager</mat-option>
+        <mat-option value="translator">Translator</mat-option>
+        <mat-option value="editor">Editor</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-flat-button color="primary" class="mt-2">Get invitation code</button>
+  </form>
+  <div class="mt-2">
+    <ng-container *ngIf="(invitationCode$ | async) as invitationCode">
+      <p>
+        Invitation code: {{ invitationCode }}
+      </p>
+    </ng-container>
+  </div>
+</div>

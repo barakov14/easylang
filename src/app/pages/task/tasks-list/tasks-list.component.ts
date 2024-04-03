@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, ViewChild} from '@angular/core';
-import {DatePipe} from "@angular/common";
+import {AsyncPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
 import {
   MatCell,
   MatCellDef,
@@ -17,24 +17,27 @@ import {RouterLink} from "@angular/router";
 @Component({
   selector: 'tasks-list',
   standalone: true,
-  imports: [
-    DatePipe,
-    MatCell,
-    MatCellDef,
-    MatColumnDef,
-    MatFormField,
-    MatHeaderCell,
-    MatHeaderRow,
-    MatHeaderRowDef,
-    MatInput,
-    MatLabel,
-    MatPaginator,
-    MatRow,
-    MatRowDef,
-    MatTable,
-    MatHeaderCellDef,
-    RouterLink
-  ],
+    imports: [
+        DatePipe,
+        MatCell,
+        MatCellDef,
+        MatColumnDef,
+        MatFormField,
+        MatHeaderCell,
+        MatHeaderRow,
+        MatHeaderRowDef,
+        MatInput,
+        MatLabel,
+        MatPaginator,
+        MatRow,
+        MatRowDef,
+        MatTable,
+        MatHeaderCellDef,
+        RouterLink,
+        AsyncPipe,
+        NgForOf,
+        NgIf
+    ],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
