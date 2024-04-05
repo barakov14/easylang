@@ -1,1 +1,29 @@
-<p>tasks-create-dialog works!</p>
+<h2 mat-dialog-title>Add task</h2>
+<div mat-dialog-content>
+  <form class="flex flex-col" [formGroup]="formGroup">
+    <mat-form-field>
+      <input matInput type="text" formControlName="name">
+      <mat-label>Task name</mat-label>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput type="text" formControlName="description"></textarea>
+      <mat-label>Description</mat-label>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Choose a deadline</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [min]="minDate"
+        formControlName="deadline"
+      >
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close type="button" (click)="onCloseDialog()">Cancel</button>
+  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Add</button>
+</div>

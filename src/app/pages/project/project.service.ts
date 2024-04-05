@@ -1,7 +1,7 @@
 import {inject, Injectable} from "@angular/core";
 import {ApiService} from "../../core/http/api.service";
-import {BehaviorSubject, catchError, map, Observable, of} from "rxjs";
-import {Project} from "../../core/api-types/project";
+import {BehaviorSubject, catchError, concatMap, map, Observable, of, switchMap, tap} from "rxjs";
+import {CreateProject, Project} from "../../core/api-types/project";
 
 @Injectable({providedIn: 'root'})
 
@@ -15,5 +15,20 @@ export class ProjectService {
       }),
       catchError(() => of(console.log('Error fetching projects list')))
     )
+  }
+
+  addProject(data: CreateProject) {
+    return this.apiService.post<Project, CreateProject>('/projects', data).pipe(
+      map((res: Project) => {
+        const currentProjects: Project[] = this.projectsList$.value as Project[];
+        const updatedProjects: Project[] = [...currentProjects, res];
+        this.projectsList$.next(updatedProjects);
+        }
+      ),
+      catchError((error) => {
+        console.log('Error adding project', error);
+        return of();
+      })
+    );
   }
 }

@@ -1,5 +1,5 @@
 <div class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
-  <div *ngIf="(user | async) as user">
+  <div *ngIf="(user$ | async) as user">
     <div class="text-xl font-medium text-black">{{ user.name }}  {{ user.surname }}</div>
     <p class="text-gray-500">{{ user.role }}</p>
     <p class="text-gray-500">Ваш рейтинг: {{ user.rate }}/100</p>
@@ -9,7 +9,7 @@
 <main class="container mx-auto px-4 py-4">
   <div class="mt-8">
     <h2 class="text-xl font-bold mb-2">Notifications</h2>
-    <ng-container *ngIf="(notifications | async) as notifications; else loading">
+    <ng-container *ngIf="(notifications$ | async) as notifications; else loading">
       <div class="mt-8">
         <div *ngIf="notifications.length > 0; else noData">
           <div *ngFor="let notification of notifications" class="border rounded-md p-4 shadow-sm">

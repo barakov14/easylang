@@ -1,1 +1,21 @@
-<p>project-create-dialog works!</p>
+<h2 mat-dialog-title>Add project</h2>
+<div mat-dialog-content>
+  <form class="flex flex-col" [formGroup]="formGroup">
+    <mat-form-field>
+      <input matInput type="text" formControlName="name">
+      <mat-label>Project name</mat-label>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput type="text" formControlName="description"></textarea>
+      <mat-label>Description</mat-label>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="number" formControlName="number_of_chapters">
+      <mat-label>Number of chapters</mat-label>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close type="button" (click)="onCloseDialog()">Cancel</button>
+  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Add</button>
+</div>

@@ -1,1 +1,1 @@
-<p>project-create-button works!</p>
+<button *ngIf="(role | async) === 'manager'" mat-raised-button color="primary" (click)="openAddProjectDialog()">Add project</button>

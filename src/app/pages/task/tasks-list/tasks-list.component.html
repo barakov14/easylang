@@ -1,26 +1,40 @@
 <div class="overflow-x-auto p-2">
-  <ng-container *ngIf="(projectsList$ | async) as projectsList; else loading">
+  <tasks-create-button
+    [projectId]="projectId"
+  ></tasks-create-button>
+  <ng-container *ngIf="(tasksList$ | async) as taskList; else loading">
     <h1>Tasks</h1>
     <table class="table-auto min-w-full">
       <thead>
       <tr>
         <th class="border px-4 py-2">ID</th>
         <th class="border px-4 py-2">Name</th>
-        <th class="border px-4 py-2">Number of Chapters</th>
+        <th class="border px-4 py-2">Responsibles</th>
         <th class="border px-4 py-2">Status</th>
         <th class="border px-4 py-2">Started At</th>
-        <th class="border px-4 py-2">Progress</th>
+        <th class="border px-4 py-2">End At</th>
+        <th class="border px-4 py-2">Progress in %</th>
+        <th class="border px-4 py-2">Success in %</th>
       </tr>
       </thead>
       <tbody>
       <!-- Вставьте данные из вашего источника данных здесь -->
-      <tr *ngFor="let project of projectsList">
-        <td class="border px-4 py-2">{{ project.id }}</td>
-        <td class="border px-4 py-2 cursor-pointer text-blue-500 hover:opacity-70" [routerLink]="[project.id]">{{ project.name }}</td>
-        <td class="border px-4 py-2">{{ project.number_of_chapters }}</td>
-        <td class="border px-4 py-2">{{ project.status }}</td>
-        <td class="border px-4 py-2">{{ project.started_at }}</td>
-        <td class="border px-4 py-2">{{ project.progress }}%</td>
+      <tr *ngFor="let task of taskList">
+        <td class="border px-4 py-2">{{ task.id }}</td>
+        <td
+          class="border px-4 py-2 cursor-pointer text-blue-500 hover:opacity-70"
+          [routerLink]="['/project', projectId, task.id]"
+        >{{ task.name }}</td>
+        <td class="border px-4 py-2" >
+          <div *ngFor="let responsible of task.responsibles">
+            <div>{{ responsible.name }} {{ responsible.surname}}, </div>
+          </div>
+        </td>
+        <td class="border px-4 py-2">{{ task.status }}</td>
+        <td class="border px-4 py-2">{{ task.started_at | date: 'MM, dd, yyyy, HH:mm:ss' }}</td>
+        <td class="border px-4 py-2">{{ task.deadline | date: 'MM, dd, yyyy, HH:mm:ss'}}</td>
+        <td class="border px-4 py-2">{{ task.progress }}%</td>
+        <td class="border px-4 py-2">{{ task.success }}%</td>
       </tr>
       <!-- Добавьте другие строки таблицы здесь -->
       </tbody>

@@ -1,6 +1,9 @@
 <div class="overflow-x-auto p-2">
   <ng-container *ngIf="(projectsList$ | async) as projectsList; else loading">
     <h1>Projects</h1>
+    <p>
+      <project-create-button></project-create-button>
+    </p>
     <table class="table-auto min-w-full">
       <thead>
       <tr>
@@ -19,7 +22,7 @@
         <td class="border px-4 py-2 cursor-pointer text-blue-500 hover:opacity-70" [routerLink]="[project.id]">{{ project.name }}</td>
         <td class="border px-4 py-2">{{ project.number_of_chapters }}</td>
         <td class="border px-4 py-2">{{ project.status }}</td>
-        <td class="border px-4 py-2">{{ project.started_at }}</td>
+        <td class="border px-4 py-2">{{ project.started_at | date: 'MM, dd, yyyy, HH:mm:ss' }}</td>
         <td class="border px-4 py-2">{{ project.progress }}%</td>
       </tr>
       <!-- Добавьте другие строки таблицы здесь -->

@@ -2,8 +2,9 @@ import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core'
 import {ProjectService} from "../project.service";
 import {DestroyService} from "../../../core/utils/destroy.service";
 import {takeUntil} from "rxjs";
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
 import {RouterLink} from "@angular/router";
+import {ProjectCreateButtonComponent} from "../project-create/project-create-button/project-create-button.component";
 @Component({
   selector: 'projects-list',
   standalone: true,
@@ -11,7 +12,9 @@ import {RouterLink} from "@angular/router";
     NgForOf,
     AsyncPipe,
     NgIf,
-    RouterLink
+    RouterLink,
+    ProjectCreateButtonComponent,
+    DatePipe
   ],
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',
