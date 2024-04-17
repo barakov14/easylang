@@ -1,13 +1,13 @@
-<mat-toolbar color="primary">
-  <span class="cursor-pointer" routerLink="/project" class="cursor-pointer hover:opacity-70 transition-opacity">EasyLang</span>
+<mat-toolbar>
+  <button mat-icon-button (click)="start.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="cursor-pointer" routerLink="/dashboard" class="cursor-pointer ml-2 text-xs hover:opacity-70 transition-opacity">EASYLANG</span>
   <span class="spacer"></span>
-  <button mat-icon-button aria-label="user add" routerLink="/invitation">
-    <mat-icon>person_add</mat-icon>
+  <button mat-icon-button aria-label="profile" routerLink="/profile">
+    <mat-icon>notifications</mat-icon>
   </button>
   <button mat-icon-button aria-label="profile" routerLink="/profile">
     <mat-icon>person</mat-icon>
-  </button>
-  <button mat-icon-button aria-label="log out">
-    <mat-icon>exit_to_app</mat-icon>
   </button>
 </mat-toolbar>

@@ -1,46 +1,45 @@
-<div class="overflow-x-auto p-2">
-  <tasks-create-button
-    [projectId]="projectId"
-  ></tasks-create-button>
-  <ng-container *ngIf="(tasksList$ | async) as taskList; else loading">
-    <h1>Tasks</h1>
-    <table class="table-auto min-w-full">
+<div class="min-h-screen p-2">
+  <h1 class="text-2xl font-bold mb-4">Backlog</h1>
+  <div>
+    <button mat-icon-button>
+      <mat-icon>filter_list</mat-icon>
+    </button>
+    <mat-form-field class="w-1/3">
+      <mat-label>Search by id, name or description...</mat-label>
+      <input matInput>
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full border-collapse border border-gray-300">
       <thead>
-      <tr>
-        <th class="border px-4 py-2">ID</th>
-        <th class="border px-4 py-2">Name</th>
-        <th class="border px-4 py-2">Responsibles</th>
-        <th class="border px-4 py-2">Status</th>
-        <th class="border px-4 py-2">Started At</th>
-        <th class="border px-4 py-2">End At</th>
-        <th class="border px-4 py-2">Progress in %</th>
-        <th class="border px-4 py-2">Success in %</th>
+      <tr class="bg-gray-200 text-gray-700">
+        <th class="p-4 text-center" colspan="2">User Story</th>
+        <th class="p-4 text-center">Status</th>
+        <th class="p-4 text-center">Translators</th>
       </tr>
       </thead>
       <tbody>
-      <!-- Вставьте данные из вашего источника данных здесь -->
-      <tr *ngFor="let task of taskList">
-        <td class="border px-4 py-2">{{ task.id }}</td>
+      <tr *ngFor="let task of tasksList$ | async">
+        <td class="p-4 text-center border border-gray-300">{{ task.id }}</td>
         <td
-          class="border px-4 py-2 cursor-pointer text-blue-500 hover:opacity-70"
-          [routerLink]="['/project', projectId, task.id]"
+          class="p-4 text-center border border-gray-300 text-blue-800 hover:underline cursor-pointer"
+          [routerLink]="[task.id]"
         >{{ task.name }}</td>
-        <td class="border px-4 py-2" >
-          <div *ngFor="let responsible of task.responsibles">
-            <div>{{ responsible.name }} {{ responsible.surname}}, </div>
-          </div>
+        <td class="p-4 text-center border border-gray-300">{{ task.status }}</td>
+        <td class="p-4 text-center border border-gray-300">
+          <ng-container *ngIf="task.responsibles.length > 0; else noResponsibles">
+            <ng-container *ngFor="let responsible of task.responsibles; let last = last">
+              {{ responsible.name }} {{ responsible.surname}}
+              <ng-container *ngIf="!last">, </ng-container>
+            </ng-container>
+          </ng-container>
+          <ng-template #noResponsibles>
+            No translators responsibled...
+          </ng-template>
         </td>
-        <td class="border px-4 py-2">{{ task.status }}</td>
-        <td class="border px-4 py-2">{{ task.started_at | date: 'MM, dd, yyyy, HH:mm:ss' }}</td>
-        <td class="border px-4 py-2">{{ task.deadline | date: 'MM, dd, yyyy, HH:mm:ss'}}</td>
-        <td class="border px-4 py-2">{{ task.progress }}%</td>
-        <td class="border px-4 py-2">{{ task.success }}%</td>
       </tr>
-      <!-- Добавьте другие строки таблицы здесь -->
       </tbody>
     </table>
-  </ng-container>
-  <ng-template #loading>
-    Loading...
-  </ng-template>
+  </div>
 </div>

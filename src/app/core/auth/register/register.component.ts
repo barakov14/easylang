@@ -9,18 +9,24 @@ import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angula
 import {LoginRequest, RegisterRequest} from "../../api-types/auth";
 import {takeUntil} from "rxjs";
 import {DestroyService} from "../../utils/destroy.service";
+import {MatStep, MatStepLabel, MatStepper, MatStepperNext, MatStepperPrevious} from "@angular/material/stepper";
 
 @Component({
   selector: 'register',
   standalone: true,
-  imports: [
-    MatCardModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatInput,
-    RouterLink,
-    ReactiveFormsModule
-  ],
+    imports: [
+        MatCardModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatInput,
+        RouterLink,
+        ReactiveFormsModule,
+        MatStep,
+        MatStepLabel,
+        MatStepper,
+        MatStepperNext,
+        MatStepperPrevious
+    ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

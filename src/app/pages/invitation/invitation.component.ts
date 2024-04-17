@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {MatFormField, MatInput} from "@angular/material/input";
-import {MatCard} from "@angular/material/card";
+import {MatFormField, MatInput, MatLabel} from "@angular/material/input";
+import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {AuthService} from "../../core/auth/services/auth.service";
@@ -23,6 +23,11 @@ import {MatButton} from "@angular/material/button";
     NgIf,
     MatButton,
     MatFormField,
+    MatCardContent,
+    MatCardTitle,
+    MatCardHeader,
+    MatLabel,
+    MatCardFooter
   ],
   templateUrl: './invitation.component.html',
   styleUrl: './invitation.component.scss',

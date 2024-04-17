@@ -22,6 +22,6 @@ export const appConfig: ApplicationConfig = {
     },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
     provideStore(),
-    provideEffects()
+    provideEffects(),
 ]
 };

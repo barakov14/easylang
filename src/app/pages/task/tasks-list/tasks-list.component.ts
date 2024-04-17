@@ -9,7 +9,7 @@ import {
   MatHeaderRowDef,
   MatRow, MatRowDef, MatTable, MatTableDataSource
 } from "@angular/material/table";
-import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatPaginator} from "@angular/material/paginator";
 import {ActivatedRoute, RouterLink} from "@angular/router";
@@ -18,6 +18,8 @@ import {DestroyService} from "../../../core/utils/destroy.service";
 import {takeUntil} from "rxjs";
 import {TasksCreateButtonComponent} from "../tasks-create/tasks-create-button/tasks-create-button.component";
 import {ProjectEditorsAddComponent} from "../../project/project-editors-add/project-editors-add.component";
+import {MatIconButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'tasks-list',
@@ -43,7 +45,10 @@ import {ProjectEditorsAddComponent} from "../../project/project-editors-add/proj
     NgForOf,
     NgIf,
     TasksCreateButtonComponent,
-    ProjectEditorsAddComponent
+    ProjectEditorsAddComponent,
+    MatIconButton,
+    MatIcon,
+    MatSuffix
   ],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.scss',

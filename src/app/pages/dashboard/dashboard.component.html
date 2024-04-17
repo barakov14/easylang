@@ -1,0 +1,31 @@
+<div class="flex flex-col p-2 h-screen">
+  <h1>Projects Dashboard</h1>
+  <div class="flex flex-wrap gap-4">
+    @for(project of projectsList$ | async; track project) {
+      <mat-card>
+        <div class="bg-image">
+          <mat-card-title class="pt-8 pr-8 pl-8 mb-2">
+            <h2
+              [routerLink]="['/project', project.id]"
+              class="hover:underline cursor-pointer"
+            >#{{ project.id }} {{ project.name }}</h2>
+          </mat-card-title>
+          <mat-card-subtitle class="pr-8 pl-8 mb-2">
+            <p class="text-center">Adilkhan Barakov</p>
+          </mat-card-subtitle>
+        </div>
+        <mat-card-content class="pr-8 pl-8 mb-2 mt-4">
+          <p class="text-center">{{ project.description }}</p>
+        </mat-card-content>
+        <mat-card-actions class="flex justify-between">
+          <p>
+            {{ project.status }}
+          </p>
+          <button mat-icon-button class="">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+</div>

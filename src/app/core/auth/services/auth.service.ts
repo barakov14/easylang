@@ -22,7 +22,7 @@ export class AuthService {
   public login(data: LoginRequest): Observable<AuthResponse | void> {
     return this.apiService.post<AuthResponse, LoginRequest>('/login', data).pipe(
       map((res) => {
-        this.router.navigateByUrl('/project')
+        this.router.navigateByUrl('/dashboard')
         this.localStorageJwtService.setItem(res.token)
       }),
       catchError(() => of(console.log('Backend errors here')))
@@ -32,7 +32,7 @@ export class AuthService {
   public register(data: RegisterRequest): Observable<AuthResponse | void> {
     return this.apiService.post<AuthResponse, LoginRequest>('/login', data).pipe(
       map((res) => {
-        this.router.navigateByUrl('/project')
+        this.router.navigateByUrl('/dashboard')
         this.localStorageJwtService.setItem(res.token)
       }),
       catchError(() => of(console.log('Backend errors here')))

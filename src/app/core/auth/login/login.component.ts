@@ -10,6 +10,7 @@ import {AuthResponse, LoginRequest} from "../../api-types/auth";
 import {DestroyService} from "../../utils/destroy.service";
 import {takeUntil} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {MatStepperModule} from "@angular/material/stepper";
 
 @Component({
   selector: 'login',
@@ -20,7 +21,8 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     MatButtonModule,
     MatInput,
     RouterLink,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatStepperModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
