@@ -17,6 +17,7 @@ import {TaskService} from "../task.service";
 import {DestroyService} from "../../../core/utils/destroy.service";
 import {takeUntil} from "rxjs";
 import {TasksCreateButtonComponent} from "../tasks-create/tasks-create-button/tasks-create-button.component";
+import {ProjectEditorsAddComponent} from "../../project/project-editors-add/project-editors-add.component";
 
 @Component({
   selector: 'tasks-list',
@@ -41,7 +42,8 @@ import {TasksCreateButtonComponent} from "../tasks-create/tasks-create-button/ta
     AsyncPipe,
     NgForOf,
     NgIf,
-    TasksCreateButtonComponent
+    TasksCreateButtonComponent,
+    ProjectEditorsAddComponent
   ],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.scss',
@@ -57,7 +59,7 @@ export class TasksListComponent implements OnInit {
 
   public projectId!: number
 
-  public tasksList$ = this.taskService.tasksList$.asObservable()
+  public tasksList$ = this.taskService.tasksList$
   ngOnInit() {
     this.projectId = this.route.snapshot.params['id']
     this.taskService.getTasksList(this.projectId).pipe(

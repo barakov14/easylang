@@ -27,11 +27,15 @@ export class ProfileComponent implements OnInit {
   private readonly destroy$ = inject(DestroyService)
 
   public notifications$ = this.notificationService.notifications.asObservable()
-  public user$ = this.profileService.user.asObservable()
+  public user$ = this.profileService.user
 
 
   ngOnInit() {
     this.notificationService.getNotifications().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe()
+
+    this.profileService.getUserInformation().pipe(
       takeUntil(this.destroy$)
     ).subscribe()
   }

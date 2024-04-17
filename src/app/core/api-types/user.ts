@@ -1,10 +1,10 @@
 export interface User {
   id: number;
-  username: string;
   name: string;
+  rate: number;
   surname: string;
   role: Role;
-  rate: number;
+  username: string;
   status: string;
 }
 

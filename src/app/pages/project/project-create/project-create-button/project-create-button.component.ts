@@ -31,7 +31,7 @@ export class ProjectCreateButtonComponent {
 
   private readonly authService = inject(ProfileService)
 
-  public role = this.authService.currentUserRole.asObservable()
+  public user$ = this.authService.user.asObservable()
 
   openAddProjectDialog() {
     const dialogRef: MatDialogRef<ProjectCreateDialogComponent> = this.dialog.open(ProjectCreateDialogComponent)

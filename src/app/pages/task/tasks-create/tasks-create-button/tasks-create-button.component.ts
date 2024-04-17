@@ -32,7 +32,7 @@ export class TasksCreateButtonComponent {
 
   @Input({required: true}) projectId!: number
 
-  public role = this.authService.currentUserRole.asObservable()
+  public role = this.authService.user.asObservable()
 
   openAddTaskDialog() {
     const dialogRef: MatDialogRef<TasksCreateDialogComponent> = this.dialog.open(TasksCreateDialogComponent)

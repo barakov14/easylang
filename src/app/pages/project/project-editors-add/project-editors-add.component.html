@@ -1,0 +1,17 @@
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <mat-label>Editors</mat-label>
+    <input type="text"
+           placeholder="Pick one"
+           aria-label="Number"
+           matInput
+           [formControl]="myControl"
+           [matAutocomplete]="auto"
+    >
+    <mat-autocomplete #auto="matAutocomplete">
+      @for (editor of editors; track editor) {
+        <mat-option [value]="editor.id">{{editor.name}} {{editor.surname}}</mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

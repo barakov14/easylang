@@ -1,51 +1,49 @@
-<div class="pr-40 pl-40">
+<div class="pr-40 pl-40" *ngIf="(taskDetail$ | async) as task">
   <header class="flex items-center justify-between py-4">
-    <h1 class="text-2xl self-start font-bold">Chapter 1</h1>
+    <h1 class="text-2xl self-start font-bold">{{ task.name }}</h1>
     <div class="flex items-center flex-col">
-      <p class="mr-4">Created by Bekzat B</p>
-      <p class="mr-4">12 Nov 2023</p>
-      <p class="mr-4">Editor: Aida A</p>
-      <p>Responsible: Adilkhan Barakov</p>
+      <p class="mr-4">Created at: {{ task.started_at }}</p>
+      <div class="mr-4" *ngIf="task.responsibles.length > 0; else noEditors">Editor:
+        <ng-container *ngFor="let editor of task.responsibles">
+          {{ editor.name }} {{ editor.surname }},
+        </ng-container>
+      </div>
+      <ng-template #noEditors>
+        <p>Editors: No editors found.</p>
+      </ng-template>
     </div>
   </header>
+  <ng-container *ngIf="(editors$ | async) as editors">
+    <project-editors-add [editors]="editors"></project-editors-add>
+  </ng-container>
   <main class="my-8">
-    <p class="text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <p class="text-lg">
+      {{ task.description }}
+    </p>
   </main>
   <hr>
-  <table class="table-auto w-full">
+  <table class="table-auto w-full mt-5">
     <thead>
     <tr>
       <th class="text-left py-2 px-4 border-b border-gray-200">ID</th>
-      <th class="text-left py-2 px-4 border-b border-gray-200">Дата начала</th>
-      <th class="text-left py-2 px-4 border-b border-gray-200">Дата сдачи</th>
       <th class="text-left py-2 px-4 border-b border-gray-200">Статус</th>
-      <th class="text-left py-2 px-4 border-b border-gray-200">Действия</th>
+      <th class="text-left py-2 px-4 border-b border-gray-200">Grade</th>
+      <th class="text-left py-2 px-4 border-b border-gray-200">Actions</th>
     </tr>
     </thead>
-    <tbody>
-    <tr>
-      <td class="py-2 px-4 border-b border-gray-200">1</td>
-      <td class="py-2 px-4 border-b border-gray-200">12.02.24</td>
-      <td class="py-2 px-4 border-b border-gray-200">16.02.24</td>
-      <td class="py-2 px-4 border-b border-gray-200 text-green-500">Выполнено</td>
+    <tbody *ngIf="(submissions$ | async) as submissions; else noSubmissions">
+    <tr *ngFor="let submission of submissions">
+      <td class="py-2 px-4 border-b border-gray-200">{{ submission.id }}</td>
+      <td class="py-2 px-4 border-b border-gray-200">{{ submission.status }}</td>
+      <td class="py-2 px-4 border-b border-gray-200">{{ submission.grade }}</td>
       <td class="py-2 px-4 border-b border-gray-200">
-        <a [routerLink]="['1']">
-          show
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td class="py-2 px-4 border-b border-gray-200">2</td>
-      <td class="py-2 px-4 border-b border-gray-200">16.02.24</td>
-      <td class="py-2 px-4 border-b border-gray-200">21.02.24</td>
-      <td class="py-2 px-4 border-b border-gray-200 text-green-500">Выполнено</td>
-      <td class="py-2 px-4 border-b border-gray-200">
-        <a [routerLink]="['1']">
-          show
+        <a [routerLink]="[submission.id]">
+          edit
         </a>
       </td>
     </tr>
     </tbody>
+    <ng-template #noSubmissions>No submissions yet...</ng-template>
   </table>
 </div>
 

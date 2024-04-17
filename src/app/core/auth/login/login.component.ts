@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DestroyRef, inject} from '@angular/core';
 import {MatCardModule} from "@angular/material/card";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
@@ -6,9 +6,10 @@ import {MatInput} from "@angular/material/input";
 import {RouterLink} from "@angular/router";
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
-import {LoginRequest} from "../../api-types/auth";
+import {AuthResponse, LoginRequest} from "../../api-types/auth";
 import {DestroyService} from "../../utils/destroy.service";
 import {takeUntil} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'login',
@@ -27,7 +28,7 @@ import {takeUntil} from "rxjs";
 })
 export class LoginComponent {
   private readonly authService = inject(AuthService)
-  private readonly destroy$ = inject(DestroyService)
+  private readonly destroy$ = inject(DestroyRef)
 
 
   public formGroup = new FormBuilder().group({
@@ -44,7 +45,7 @@ export class LoginComponent {
       }
 
       this.authService.login(data).pipe(
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroy$)
       ).subscribe()
     }
   }
