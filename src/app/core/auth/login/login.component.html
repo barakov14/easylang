@@ -8,14 +8,15 @@
       <form class="login-form" [formGroup]="formGroup" (ngSubmit)="onLogin()">
         <mat-form-field class="input-field">
           <mat-label>Username</mat-label>
-          <input matInput formControlName="username">
+          <input matInput formControlName="username" />
         </mat-form-field>
         <mat-form-field class="input-field">
           <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password">
+          <input matInput type="password" formControlName="password" />
         </mat-form-field>
-        <button mat-raised-button color="primary" class="submit-btn">LOGIN</button>
-        <a routerLink="/register" class="mt-4 hover:opacity-70 transition-opacity">Don't have an account?</a>
+        <button mat-raised-button color="primary" class="submit-btn">
+          LOGIN
+        </button>
       </form>
     </mat-card-content>
   </mat-card>

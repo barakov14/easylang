@@ -1,0 +1,8 @@
+<button
+  mat-raised-button
+  color="primary"
+  (click)="openAddResponsibleDialog()"
+  *ngIf="(role | async)!.role === 'manager'"
+>
+  Add responsible
+</button>

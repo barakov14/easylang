@@ -1,1 +1,8 @@
-<button *ngIf="(user$ | async)?.role === 'manager'" mat-raised-button color="primary" (click)="openAddProjectDialog()">Add project</button>
+<button
+  *ngIf="(user$ | async)?.role === 'manager'"
+  mat-fab
+  color="primary"
+  (click)="openAddProjectDialog()"
+>
+  <mat-icon>add</mat-icon>
+</button>

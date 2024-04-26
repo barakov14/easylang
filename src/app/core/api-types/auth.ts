@@ -1,18 +1,19 @@
 export interface LoginRequest {
-  username: string;
-  password: string;
+  username: string
+  password: string
 }
 
 export interface AuthResponse {
-  token: string;
+  token: string
 }
 
 export interface RegisterRequest {
-  username: string,
-  name: string,
-  surname: string,
-  invitation_code: string,
+  username: string
+  name: string
+  surname: string
+  role: string
   password: string
+  email: string
 }
 
 export interface InvitationCodeRequest {
@@ -22,4 +23,8 @@ export interface InvitationCodeRequest {
 export interface InvitationCodeResponse {
   code: string
   role: string
+}
+
+export interface GetRefreshToken {
+  access_token: string
 }

@@ -1,14 +1,23 @@
-import {ChangeDetectionStrategy, Component, DestroyRef, inject} from '@angular/core';
-import {MatButton} from "@angular/material/button";
-import {MatDialog, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {ProjectCreateDialogComponent} from "../project-create-dialog/project-create-dialog.component";
-import {takeUntil} from "rxjs";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {CreateProject} from "../../../../core/api-types/project";
-import {ProjectService} from "../../project.service";
-import { AuthService } from '../../../../core/auth/services/auth.service';
-import {ProfileService} from "../../../profile/services/profile.service";
-import {AsyncPipe, NgIf} from "@angular/common";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+} from '@angular/core'
+import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button'
+import {
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog'
+import {ProjectCreateDialogComponent} from '../project-create-dialog/project-create-dialog.component'
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
+import {CreateProject} from '../../../../core/api-types/project'
+import {ProjectService} from '../../project.service'
+import {AuthService} from '../../../../core/auth/services/auth.service'
+import {ProfileService} from '../../../profile/services/profile.service'
+import {AsyncPipe, NgIf} from '@angular/common'
+import {MatIcon} from '@angular/material/icon'
 
 @Component({
   selector: 'project-create-button',
@@ -17,12 +26,14 @@ import {AsyncPipe, NgIf} from "@angular/common";
     MatDialogModule,
     MatButton,
     NgIf,
-    AsyncPipe
+    AsyncPipe,
+    MatIconButton,
+    MatIcon,
+    MatFabButton,
   ],
   templateUrl: './project-create-button.component.html',
   styleUrl: './project-create-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-
 })
 export class ProjectCreateButtonComponent {
   public dialog = inject(MatDialog)
@@ -34,15 +45,16 @@ export class ProjectCreateButtonComponent {
   public user$ = this.authService.user.asObservable()
 
   openAddProjectDialog() {
-    const dialogRef: MatDialogRef<ProjectCreateDialogComponent> = this.dialog.open(ProjectCreateDialogComponent)
-    dialogRef.afterClosed()
+    const dialogRef: MatDialogRef<ProjectCreateDialogComponent> =
+      this.dialog.open(ProjectCreateDialogComponent)
+    dialogRef
+      .afterClosed()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(
-      (data: CreateProject) => {
-        this.projectService.addProject(data)
+      .subscribe((data: CreateProject) => {
+        this.projectService
+          .addProject(data)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe()
-      }
-    )
+      })
   }
 }

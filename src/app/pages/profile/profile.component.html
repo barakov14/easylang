@@ -1,42 +1,14 @@
-<div class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
-  <div *ngIf="(user$ | async) as user">
-    <div class="text-xl font-medium text-black">{{ user.name }}  {{ user.surname }}</div>
-    <p class="text-gray-500">{{ user.role }}</p>
-    <p class="text-gray-500">Ваш рейтинг: {{ user.rate }}/100</p>
-    <p class="text-green-500">Статус: {{ user.status }}</p>
+<div class="p-6 max-w-sm mx-auto h-screen">
+  <div
+    class="p-6 bg-white rounded-xl shadow-md flex items-center space-x-4"
+  >
+    <div *ngIf="user$ | async as user">
+      <div class="text-xl font-medium text-black">
+        {{ user.name }} {{ user.surname }}
+      </div>
+      <p class="text-gray-500">{{ user.role }}</p>
+      <p class="text-gray-500">Ваш рейтинг: {{ user.rate }}/100</p>
+      <p class="text-green-500">Статус: {{ user.status }}</p>
+    </div>
   </div>
 </div>
-<main class="container mx-auto px-4 py-4">
-  <div class="mt-8">
-    <h2 class="text-xl font-bold mb-2">Notifications</h2>
-    <ng-container *ngIf="(notifications$ | async) as notifications; else loading">
-      <div class="mt-8">
-        <div *ngIf="notifications.length > 0; else noData">
-          <div *ngFor="let notification of notifications" class="border rounded-md p-4 shadow-sm">
-            <div class="flex justify-between items-center">
-              <div class="font-bold">{{ notification.id }}</div>
-            </div>
-            <div class="flex justify-between items-center">
-              <div class="font-bold">{{ notification.project_id }}</div>
-              <div class="text-gray-500">{{ notification.project_name }}</div>
-            </div>
-            <div class="flex justify-between items-center mt-2">
-              <div class="flex items-center space-x-2 text-red-500">
-                <span>{{ notification.status }}</span>
-                <a class="px-2 py-1 rounded-md bg-red-200 hover:bg-red-300">show</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <ng-template #noData>
-          No notifications here...
-        </ng-template>
-      </div>
-    </ng-container>
-    <ng-template #loading>
-      <div>
-        Loading...
-      </div>
-    </ng-template>
-  </div>
-</main>

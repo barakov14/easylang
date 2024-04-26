@@ -1,0 +1,8 @@
+<button
+  mat-raised-button
+  color="primary"
+  (click)="openAddEditorDialog()"
+  *ngIf="(role | async)!.role === 'manager'"
+>
+  Add editor
+</button>

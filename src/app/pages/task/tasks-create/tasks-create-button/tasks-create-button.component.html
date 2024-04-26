@@ -1,1 +1,8 @@
-<button mat-raised-button color="primary" (click)="openAddTaskDialog()">Create task</button>
+<button
+  mat-fab
+  color="primary"
+  *ngIf="(user$ | async)?.role === 'manager'"
+  (click)="openAddTaskDialog()"
+>
+  <mat-icon>add</mat-icon>
+</button>

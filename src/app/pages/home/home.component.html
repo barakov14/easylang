@@ -1,12 +1,8 @@
 <div class="wrapper theme h-screen">
-  <header
-    [start]="start"
-  ></header>
+  <header [start]="start"></header>
   <mat-drawer-container class="example-container">
     <mat-drawer mode="side" opened #start>
-      <ui-navbar
-      [start]="start"
-    ></ui-navbar>
+      <ui-navbar [start]="start"></ui-navbar>
     </mat-drawer>
     <mat-drawer-content class="content-container">
       <router-outlet></router-outlet>

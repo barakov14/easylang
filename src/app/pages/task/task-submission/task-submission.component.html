@@ -1,3 +1,8 @@
 <form [formGroup]="formGroup">
   <st-editor formControlName="text" [config]="config"></st-editor>
+  <div class="flex flex-col fixed bottom-8 right-8" *ngIf="(user$ | async) as user">
+    <button mat-fab color="primary" *ngIf="user.role === 'translator'">
+      <mat-icon>forward</mat-icon>
+    </button>
+  </div>
 </form>

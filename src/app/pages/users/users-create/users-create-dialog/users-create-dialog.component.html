@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Add user</h2>
+<div mat-dialog-content>
+  <form class="flex flex-col" [formGroup]="formGroup">
+    <mat-form-field>
+      <input matInput type="text" formControlName="username" />
+      <mat-label>Username</mat-label>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="name">
+      <mat-label>Name</mat-label>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="surname" />
+      <mat-label>Surname</mat-label>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="email" />
+      <mat-label>Email</mat-label>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Choose a role</mat-label>
+      <mat-select formControlName="role">
+        <mat-option value="translator">Translator</mat-option>
+        <mat-option value="manager">Manager</mat-option>
+        <mat-option value="editor">Editor</mat-option>
+        <mat-option value="admin">Admin</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="password" />
+      <mat-label>Password</mat-label>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close type="button" (click)="onCloseDialog()">
+    Cancel
+  </button>
+  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">
+    Add
+  </button>
+</div>
