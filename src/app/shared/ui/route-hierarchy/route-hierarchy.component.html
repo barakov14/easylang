@@ -1,0 +1,8 @@
+<div>
+  <div
+    class="flex flex-col"
+    *ngFor="let segment of routeHierarchy; let i = index"
+  >
+    <a [routerLink]="getLink(i)">{{ segment }}</a>
+  </div>
+</div>

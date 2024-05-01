@@ -2,53 +2,55 @@
   <div class="container text-center mb-2">
     <h1>EMPLOYEE MANAGEMENT OF EASYLANG</h1>
   </div>
-  <div class="flex justify-center">
-    <mat-form-field>
-      <mat-label>Search employee by username, name, surname or role</mat-label>
-      <input type="text" matInput class="w-full">
-    </mat-form-field>
-  </div>
-  @if(users$ | async; as users) {
-
-      <table class="w-full border-collapse border border-gray-300">
-        <tr class="bg-gray-200 text-gray-700">
-          <th class="p-4 text-center">ID</th>
-          <th class="p-4 text-center">Username</th>
-          <th class="p-4 text-center">Name and Surname</th>
-          <th class="p-4 text-center">Role</th>
-          <th class="p-4 text-center">Status</th>
-          <th class="p-4 text-center">Actions</th>
+  @if (users$ | async; as users) {
+    <table class="w-full border-collapse border border-gray-300">
+      <tr class="bg-gray-200 text-gray-700">
+        <th class="p-4 text-center">ID</th>
+        <th class="p-4 text-center">Username</th>
+        <th class="p-4 text-center">Name and Surname</th>
+        <th class="p-4 text-center">Role</th>
+        <th class="p-4 text-center">Status</th>
+        <th class="p-4 text-center">Actions</th>
+      </tr>
+      @for (user of users; track user) {
+        <tr>
+          <td class="p-4 text-center border border-gray-300">
+            {{ user.id }}
+          </td>
+          <td class="p-4 text-center border border-gray-300">
+            {{ user.username }}
+          </td>
+          <td class="p-4 text-center border border-gray-300">
+            {{ user.name }} {{ user.surname }}
+          </td>
+          <td class="p-4 text-center border border-gray-300">
+            {{ user.role }}
+          </td>
+          <td class="p-4 text-center border border-gray-300">
+            {{ user.status }}
+          </td>
+          <td class="pt-2 pb-2 text-center border border-gray-300">
+            <button
+              mat-icon-button
+              color="accent"
+              (click)="changeIsAvailable(user.id, user.status === 'READY')"
+            >
+              <mat-icon>face</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onDeleteUser(user.id)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
         </tr>
-        @for(user of users; track user) {
-          <tr>
-            <td class="p-4 text-center border border-gray-300">
-              {{ user.id }}
-            </td>
-            <td class="p-4 text-center border border-gray-300">
-              {{ user.username }}
-            </td>
-            <td class="p-4 text-center border border-gray-300">
-              {{ user.name }} {{ user.surname }}
-            </td>
-            <td class="p-4 text-center border border-gray-300">
-              {{ user.role }}
-            </td>
-            <td class="p-4 text-center border border-gray-300">
-              {{ user.status }}
-            </td>
-            <td class="pt-2 pb-2 text-center border border-gray-300">
-              <button mat-icon-button color="accent" (click)="changeIsAvailable(user.id, user.status === 'READY')">
-                <mat-icon>face</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" (click)="onDeleteUser(user.id)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </td>
-          </tr>
-        }
-      </table>
+      }
+    </table>
   }
-  <users-create-button
-    class="fixed bottom-8 right-8"
-  ></users-create-button>
+  <users-create-button class="fixed bottom-8 right-8"></users-create-button>
+</div>
+<div class="flex justify-center mt-10 mb-4">
+  <button mat-raised-button (click)="onLogout()">Log Out</button>
 </div>

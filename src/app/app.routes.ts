@@ -2,6 +2,7 @@ import {Routes} from '@angular/router'
 import {HomeComponent} from './pages/home/home.component'
 import {authGuard} from './core/auth/services/auth.guard'
 import {adminGuard} from './core/auth/services/role.guard'
+import {blockGuard} from './core/auth/services/block.guard'
 
 export const routes: Routes = [
   {
@@ -51,10 +52,18 @@ export const routes: Routes = [
             (c) => c.ProfileComponent,
           ),
       },
+      {
+        path: 'rating',
+        loadComponent: () =>
+          import('./pages/rating/rating.component').then(
+            (c) => c.RatingComponent,
+          ),
+      },
     ],
   },
   {
     path: 'login',
+    canActivate: [blockGuard],
     loadComponent: () =>
       import('./core/auth/login/login.component').then((c) => c.LoginComponent),
   },
@@ -64,6 +73,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/users/users-list/users-list.component').then(
         (c) => c.UsersListComponent,
+      ),
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./shared/ui/pages-not-found/pages-not-found.component').then(
+        (c) => c.PagesNotFoundComponent,
       ),
   },
 ]

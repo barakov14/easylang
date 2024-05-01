@@ -1,0 +1,50 @@
+
+<div class="p-4">
+  <div class="flex justify-between">
+    <h2 mat-dialog-title>Set deadline</h2>
+    <div>
+      <button mat-icon-button mat-dialog-close class="mr-2 mt-2">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div mat-dialog-content>
+    <div class="bg-red-500 text-white p-2 mb-2" *ngIf="validationErrors">{{ validationErrors }}</div>
+    <form class="flex flex-col" [formGroup]="formGroup">
+      <mat-form-field>
+        <mat-label>Choose a deadline</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [min]="minDate"
+          formControlName="deadline"
+        />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </form>
+    <div mat-dialog-actions>
+      <button
+        mat-button
+        mat-dialog-close
+        type="button"
+        (click)="onCloseDialog()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        (click)="onSubmit()"
+      >
+        Set
+      </button>
+    </div>
+  </div>
+</div>

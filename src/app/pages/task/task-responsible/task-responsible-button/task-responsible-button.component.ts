@@ -41,7 +41,9 @@ export class TaskResponsibleButtonComponent {
 
   openAddResponsibleDialog() {
     const dialogRef: MatDialogRef<TaskResponsibleDialogComponent> =
-      this.dialog.open(TaskResponsibleDialogComponent)
+      this.dialog.open(TaskResponsibleDialogComponent, {
+        hasBackdrop: true,
+      })
     dialogRef
       .afterClosed()
       .pipe(takeUntilDestroyed(this.destroyRef))

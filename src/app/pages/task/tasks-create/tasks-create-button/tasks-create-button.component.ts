@@ -39,7 +39,9 @@ export class TasksCreateButtonComponent {
 
   openAddTaskDialog() {
     const dialogRef: MatDialogRef<TasksCreateDialogComponent> =
-      this.dialog.open(TasksCreateDialogComponent)
+      this.dialog.open(TasksCreateDialogComponent, {
+        hasBackdrop: true,
+      })
     dialogRef
       .afterClosed()
       .pipe(takeUntilDestroyed(this.destroyRef))

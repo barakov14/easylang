@@ -5,6 +5,12 @@
       <p class="text-sm">love your project.</p>
     </mat-card-title>
     <mat-card-content>
+      <ng-container *ngIf="(error$ | async) as backendErrors">
+        <backend-errors
+          [error]="backendErrors.message"
+        ></backend-errors>
+      </ng-container>
+      <div class="bg-red-500 text-white p-2 mb-2" *ngIf="validationErrors">{{ validationErrors }}</div>
       <form class="login-form" [formGroup]="formGroup" (ngSubmit)="onLogin()">
         <mat-form-field class="input-field">
           <mat-label>Username</mat-label>

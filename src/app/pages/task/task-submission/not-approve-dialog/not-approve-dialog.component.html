@@ -1,0 +1,22 @@
+<div class="flex justify-between">
+  <h2 mat-dialog-title>Please comment your decision</h2>
+  <button mat-icon-button mat-dialog-close class="mr-2 mt-2">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <form class="flex flex-col" [formGroup]="formGroup">
+    <mat-form-field>
+      <textarea matInput type="text" formControlName="comment"></textarea>
+      <mat-label>Comment</mat-label>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions class="float-end">
+  <button mat-button mat-dialog-close type="button" (click)="onCloseDialog()">
+    Cancel
+  </button>
+  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">
+    Submit
+  </button>
+</div>

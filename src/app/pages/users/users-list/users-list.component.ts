@@ -10,9 +10,10 @@ import {UsersCreateButtonComponent} from '../users-create/users-create-button/us
 import {TasksCreateButtonComponent} from '../../task/tasks-create/tasks-create-button/tasks-create-button.component'
 import {UsersService} from '../users.service'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
-import {MatIconButton} from '@angular/material/button'
+import {MatButton, MatIconButton} from '@angular/material/button'
 import {MatIcon} from '@angular/material/icon'
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input'
+import {Router} from '@angular/router'
 
 @Component({
   selector: 'users-list',
@@ -28,6 +29,7 @@ import {MatFormField, MatInput, MatLabel} from '@angular/material/input'
     MatInput,
     MatFormField,
     MatLabel,
+    MatButton,
   ],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss',
@@ -37,6 +39,7 @@ import {MatFormField, MatInput, MatLabel} from '@angular/material/input'
 export class UsersListComponent implements OnInit {
   private readonly usersService = inject(UsersService)
   private readonly destroyRef = inject(DestroyRef)
+  private readonly router = inject(Router)
   public readonly users$ = this.usersService.users$.asObservable()
   ngOnInit() {
     this.usersService
@@ -64,5 +67,10 @@ export class UsersListComponent implements OnInit {
           // You can also show an error message to the user if needed
         },
       )
+  }
+
+  onLogout() {
+    localStorage.removeItem('jwtToken')
+    this.router.navigate(['/login'])
   }
 }

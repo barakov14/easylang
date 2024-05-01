@@ -10,6 +10,7 @@ import {ProjectService} from '../project/project.service'
 import {
   AsyncPipe,
   NgClass,
+  NgForOf,
   NgIf,
   NgOptimizedImage,
   NgStyle,
@@ -29,6 +30,13 @@ import {ProjectCreateButtonComponent} from '../project/project-create/project-cr
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {ProfileService} from '../profile/services/profile.service'
+import {MatProgressBar} from '@angular/material/progress-bar'
+import {BackendErrorsComponent} from '../../shared/ui/backend-errors/backend-errors.component'
+import {NgxPaginationModule} from 'ngx-pagination'
+import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field'
+import {MatInput} from '@angular/material/input'
+import {FormControl, ReactiveFormsModule} from '@angular/forms'
+import {debounceTime} from 'rxjs'
 
 @Component({
   selector: 'dashboard',
@@ -54,6 +62,15 @@ import {ProfileService} from '../profile/services/profile.service'
     MatMenu,
     MatMenuItem,
     NgIf,
+    MatProgressBar,
+    BackendErrorsComponent,
+    NgxPaginationModule,
+    NgForOf,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatSuffix,
+    ReactiveFormsModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -63,8 +80,29 @@ export class DashboardComponent implements OnInit {
   private readonly projectService = inject(ProjectService)
   private readonly profileService = inject(ProfileService)
   private readonly destroyRef = inject(DestroyRef)
-  public projectsList$ = this.projectService.projectsList$.asObservable()
+  public projectsList$ = this.projectService.filteredProjects$.asObservable()
   public user$ = this.profileService.user.asObservable()
+  public errors$ = this.projectService.errors$
+
+  filter = new FormControl('')
+
+  sortByStatus = new FormControl('')
+
+  p: number = 1
+
+  constructor() {
+    this.filter.valueChanges
+      .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
+      .subscribe((v) => {
+        this.projectService.filterProjects(v as string)
+      })
+
+    this.sortByStatus.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((v) => {
+        this.projectService.sortProjectsByStatus(v as string)
+      })
+  }
 
   ngOnInit() {
     this.projectService
@@ -78,5 +116,9 @@ export class DashboardComponent implements OnInit {
       .deleteProject(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe()
+  }
+
+  onSort(sort: string) {
+    this.sortByStatus.setValue(sort)
   }
 }

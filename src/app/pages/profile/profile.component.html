@@ -1,14 +1,21 @@
 <div class="p-6 max-w-sm mx-auto h-screen">
-  <div
-    class="p-6 bg-white rounded-xl shadow-md flex items-center space-x-4"
-  >
+  <div class="p-6 bg-white rounded-xl shadow-md flex items-center space-x-4">
     <div *ngIf="user$ | async as user">
       <div class="text-xl font-medium text-black">
         {{ user.name }} {{ user.surname }}
       </div>
       <p class="text-gray-500">{{ user.role }}</p>
       <p class="text-gray-500">Ваш рейтинг: {{ user.rate }}/100</p>
-      <p class="text-green-500">Статус: {{ user.status }}</p>
+      <p class="text-gray-500">
+        Статус:
+        <span
+          [ngClass]="{
+            'text-red-500': user.status === 'NOT READY',
+            'text-green-500': user.status === 'READY'
+          }"
+          >{{ user.status }}</span
+        >
+      </p>
     </div>
   </div>
 </div>

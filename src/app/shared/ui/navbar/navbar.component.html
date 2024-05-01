@@ -5,24 +5,29 @@
       <span>Dashboards</span>
     </mat-list-item>
     <mat-list-item (click)="toggleDropdown()">
-      <mat-icon
-        matListItemIcon
-        *ngIf="!showDropdown; else backDropdown"
-      >
+      <mat-icon matListItemIcon *ngIf="!showDropdown; else backDropdown">
         expand_more
       </mat-icon>
       <ng-template #backDropdown>
         <mat-icon matListItemIcon>chevron_right</mat-icon>
       </ng-template>
-      <span>Projects</span>
+      <span>Last projects</span>
     </mat-list-item>
     <mat-divider></mat-divider>
     <div *ngIf="showDropdown" class="w-full">
-      <mat-nav-list *ngFor="let project of projectsList$ | async">
-        <mat-list-item>{{ project.name }}</mat-list-item>
+      <mat-nav-list>
+        <ng-container *ngIf="projects && projects.length > 0; else noProjects">
+          <mat-list-item *ngFor="let project of projects" [routerLink]="['/project', project.id]">
+            <span>#{{ project.id }}</span> {{ project.name }}
+          </mat-list-item>
+        </ng-container>
+        <ng-template #noProjects>
+          <mat-list-item disabled>No projects found</mat-list-item>
+        </ng-template>
       </mat-nav-list>
+
     </div>
-    <mat-list-item>
+    <mat-list-item routerLink="/rating">
       <mat-icon matListItemIcon>poll</mat-icon>
       <span>Translators rating</span>
     </mat-list-item>

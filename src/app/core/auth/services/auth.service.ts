@@ -11,22 +11,31 @@ import {
 import {ApiService} from '../../http/api.service'
 import {BehaviorSubject, catchError, map, Observable, of} from 'rxjs'
 import {Router} from '@angular/router'
+import {ErrorResponse} from '../../api-types/error'
+import {MatSnackBar} from '@angular/material/snack-bar'
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
   private readonly localStorageJwtService = inject(LocalStorageJwtService)
   private readonly apiService = inject(ApiService)
   private readonly router = inject(Router)
+  private readonly _snackbar = inject(MatSnackBar)
 
-  public login(data: LoginRequest): Observable<AuthResponse | void> {
+  public errors$ = new BehaviorSubject<ErrorResponse | null>(null)
+
+  public login(data: LoginRequest): Observable<void> {
     return this.apiService
       .post<AuthResponse, LoginRequest>('/login', data)
       .pipe(
-        map((res) => {
+        map((res: AuthResponse) => {
           this.router.navigateByUrl('/dashboard')
           this.localStorageJwtService.setItem(res.token)
+          this._snackbar.open('Authenticated successfully', 'OK')
         }),
-        catchError(() => of(console.log('Backend errors here'))),
+        catchError((errors) => {
+          // Вывод ошибки в консоль для отладки
+          return of(this.errors$.next(errors.error)) // Отправка ошибки через BehaviorSubject
+        }),
       )
   }
 

@@ -1,8 +1,45 @@
-<form [formGroup]="formGroup">
-  <st-editor formControlName="text" [config]="config"></st-editor>
-  <div class="flex flex-col fixed bottom-8 right-8" *ngIf="(user$ | async) as user">
-    <button mat-fab color="primary" *ngIf="user.role === 'translator'">
-      <mat-icon>forward</mat-icon>
+<ng-container *ngIf="user$ | async as user">
+  <div class="ml-4 mt-4 mb-4">
+    <button mat-fab (click)="goBack()" color="basic">
+      <mat-icon>keyboard_backspace</mat-icon>
     </button>
   </div>
-</form>
+  <div class="min-h-screen">
+    <ng-container *ngIf="user.role === 'translator'; else elsee">
+      <form [formGroup]="formGroup">
+        <st-editor formControlName="text" [config]="config"></st-editor>
+      </form>
+      <div
+        *ngIf="user.role === 'translator'"
+        class="flex flex-col fixed bottom-8 right-8"
+      >
+        <button mat-fab color="primary" (click)="openPagesDialog()">
+          <mat-icon>forward</mat-icon>
+        </button>
+      </div>
+    </ng-container>
+    <ng-template #elsee>
+      <ng-container *ngIf="submission$ | async as submission">
+        <div class="p-20">
+          <div [innerHTML]="submission.text"></div>
+        </div>
+        <div
+          *ngIf="user.role === 'editor' && submission.status !== 'APPROVED'"
+          class="flex flex-col fixed bottom-8 right-8"
+        >
+          <button
+            mat-fab
+            color="warn"
+            class="mb-4"
+            (click)="openNotApproveDialog()"
+          >
+            <mat-icon>undo</mat-icon>
+          </button>
+          <button mat-fab color="primary" (click)="openApproveDialog()">
+            <mat-icon>done_outline</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+    </ng-template>
+  </div>
+</ng-container>

@@ -46,15 +46,19 @@ export class ProjectCreateButtonComponent {
 
   openAddProjectDialog() {
     const dialogRef: MatDialogRef<ProjectCreateDialogComponent> =
-      this.dialog.open(ProjectCreateDialogComponent)
+      this.dialog.open(ProjectCreateDialogComponent, {
+        hasBackdrop: true,
+      })
     dialogRef
       .afterClosed()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data: CreateProject) => {
-        this.projectService
-          .addProject(data)
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe()
+        if (data) {
+          this.projectService
+            .addProject(data)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe()
+        }
       })
   }
 }

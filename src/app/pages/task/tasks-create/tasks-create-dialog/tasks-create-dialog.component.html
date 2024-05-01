@@ -1,5 +1,15 @@
-<h2 mat-dialog-title>Add task</h2>
+<div class="flex justify-between">
+  <h2 mat-dialog-title>Add task</h2>
+  <button mat-icon-button mat-dialog-close class="mr-2 mt-2">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
 <div mat-dialog-content>
+  <ng-container *ngIf="validationError">
+    <backend-errors
+      [error]="validationError"
+    ></backend-errors>
+  </ng-container>
   <form class="flex flex-col" [formGroup]="formGroup">
     <mat-form-field>
       <input matInput type="text" formControlName="name" />
@@ -13,21 +23,6 @@
       <input matInput type="number" formControlName="pages" />
       <mat-label>Pages for translating</mat-label>
     </mat-form-field>
-    <!--<mat-form-field>
-      <mat-label>Choose a deadline</mat-label>
-      <input
-        matInput
-        [matDatepicker]="picker"
-        [min]="minDate"
-        formControlName="deadline"
-      />
-      <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="picker"
-      ></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>-->
   </form>
 </div>
 <div mat-dialog-actions>

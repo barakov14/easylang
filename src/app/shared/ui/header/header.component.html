@@ -1,17 +1,29 @@
-<mat-toolbar color="primary">
-  <button mat-icon-button (click)="start.toggle()">
+<mat-toolbar class="flex flex-wrap items-center">
+  <button mat-icon-button (click)="start.toggle()" class="mr-2">
     <mat-icon>menu</mat-icon>
   </button>
-  <span
-    routerLink="/dashboard"
-    class="cursor-pointer ml-2 text-xs hover:opacity-70 transition-opacity"
-    >EASYLANG</span
-  >
-  <span class="spacer"></span>
-  <button mat-icon-button aria-label="profile" routerLink="/events">
-    <mat-icon>notifications</mat-icon>
+  <span *ngIf="isSmallScreen; else showLogo"></span>
+  <ng-template #showLogo>
+    <span routerLink="/dashboard" class="cursor-pointer hover:opacity-70 transition-opacity">easylang</span>
+  </ng-template>
+  <span class="flex-grow"></span>
+  <div *ngIf="currentTime$ | async as time" class="mr-2">
+    <div style="font-size: 0.8rem;">{{ time | date: 'EEE, dd MMM, h:mm:ss a' }}</div>
+  </div>
+  <button mat-icon-button aria-label="notification" routerLink="/events" class="mr-2">
+    <mat-icon [matBadge]="notificationsCount | async">notifications</mat-icon>
   </button>
-  <button mat-icon-button aria-label="profile" routerLink="/profile">
+  <button mat-icon-button aria-label="profile" [matMenuTriggerFor]="menu">
     <mat-icon>person</mat-icon>
   </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/profile">
+      <mat-icon>person</mat-icon>
+      <span>Profile</span>
+    </button>
+    <button mat-menu-item (click)="onLogout()">
+      <mat-icon>input</mat-icon>
+      <span>Log out</span>
+    </button>
+  </mat-menu>
 </mat-toolbar>

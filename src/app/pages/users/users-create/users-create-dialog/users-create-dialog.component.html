@@ -1,12 +1,18 @@
-<h2 mat-dialog-title>Add user</h2>
+<div class="flex justify-between">
+  <h2 mat-dialog-title>Add user</h2>
+  <button mat-icon-button mat-dialog-close class="mr-2 mt-2">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
 <div mat-dialog-content>
+  <div class="bg-red-500 text-white p-2 mb-2" *ngIf="validationErrors">{{ validationErrors }}</div>
   <form class="flex flex-col" [formGroup]="formGroup">
     <mat-form-field>
       <input matInput type="text" formControlName="username" />
       <mat-label>Username</mat-label>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" formControlName="name">
+      <input matInput type="text" formControlName="name" />
       <mat-label>Name</mat-label>
     </mat-form-field>
     <mat-form-field>

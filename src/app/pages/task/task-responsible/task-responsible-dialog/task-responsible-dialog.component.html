@@ -1,21 +1,28 @@
-<h2 mat-dialog-title>Add responsible</h2>
-
+<div class="flex justify-between">
+  <h2 mat-dialog-title>Add responsible</h2>
+  <button mat-icon-button mat-dialog-close class="mr-2 mt-2">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
 
 <div mat-dialog-content>
   <form class="flex flex-col" [formGroup]="formGroup">
     <mat-form-field>
       <mat-label>Translators</mat-label>
 
-      <input type="text"
-             placeholder="Pick one"
-             aria-label="Number"
-             matInput
-             [matAutocomplete]="auto"
-             formControlName="translator"
-      >
+      <input
+        type="text"
+        placeholder="Pick one"
+        aria-label="Number"
+        matInput
+        [matAutocomplete]="auto"
+        formControlName="translator"
+      />
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        @for (translator of (translators$ | async); track translator) {
-          <mat-option [value]="translator">{{ translator.name }} {{ translator.surname }}</mat-option>
+        @for (translator of translators$ | async; track translator) {
+          <mat-option [value]="translator"
+            >{{ translator.name }} {{ translator.surname }}</mat-option
+          >
         }
       </mat-autocomplete>
     </mat-form-field>
@@ -24,7 +31,12 @@
     <button mat-button mat-dialog-close type="button" (click)="onCloseDialog()">
       Cancel
     </button>
-    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="onSubmit()"
+    >
       Add
     </button>
   </div>

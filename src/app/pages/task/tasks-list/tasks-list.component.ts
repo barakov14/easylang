@@ -7,7 +7,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core'
-import {AsyncPipe, DatePipe, NgForOf, NgIf} from '@angular/common'
+import {
+  AsyncPipe,
+  DatePipe,
+  NgClass,
+  NgForOf,
+  NgIf,
+  NgOptimizedImage,
+} from '@angular/common'
 import {
   MatCell,
   MatCellDef,
@@ -27,13 +34,18 @@ import {MatPaginator} from '@angular/material/paginator'
 import {ActivatedRoute, RouterLink} from '@angular/router'
 import {TaskService} from '../task.service'
 import {DestroyService} from '../../../core/utils/destroy.service'
-import {takeUntil} from 'rxjs'
+import {debounceTime, takeUntil} from 'rxjs'
 import {TasksCreateButtonComponent} from '../tasks-create/tasks-create-button/tasks-create-button.component'
 import {ProjectEditorsAddComponent} from '../../project/project-editors-add/project-editors-add.component'
 import {MatIconButton} from '@angular/material/button'
 import {MatIcon} from '@angular/material/icon'
 import {TaskEditorButtonComponent} from '../task-editor/task-editor-button/task-editor-button.component'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
+import {MatCard} from '@angular/material/card'
+import {BackendErrorsComponent} from '../../../shared/ui/backend-errors/backend-errors.component'
+import {NgxPaginationModule} from 'ngx-pagination'
+import {FormControl, ReactiveFormsModule} from '@angular/forms'
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu'
 
 @Component({
   selector: 'tasks-list',
@@ -64,6 +76,15 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
     MatIcon,
     MatSuffix,
     TaskEditorButtonComponent,
+    NgOptimizedImage,
+    MatCard,
+    NgClass,
+    BackendErrorsComponent,
+    NgxPaginationModule,
+    ReactiveFormsModule,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
   ],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.scss',
@@ -77,19 +98,51 @@ export class TasksListComponent implements OnInit {
 
   public projectId!: number
 
-  public tasksList$ = this.taskService.tasksList$.asObservable()
-  public projectInfo$ = this.taskService.projectInfo$.asObservable()
+  public tasksList$ = this.taskService.filteredTasksList$
+  public projectInfo$ = this.taskService.projectInfo$
+  public projectEditors$ = this.taskService.projectEditors$
+
+  public errors$ = this.taskService.errors$
+
+  filter = new FormControl('')
+
+  sortByStatus = new FormControl('')
+
+  constructor() {
+    this.filter.valueChanges
+      .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
+      .subscribe((v) => {
+        this.taskService.filterTasks(v as string)
+      })
+
+    this.sortByStatus.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((v) => {
+        this.taskService.sortTasksByStatus(v as string)
+      })
+  }
+
+  p: number = 1
   ngOnInit() {
-    this.projectId = this.route.snapshot.params['id']
-
-    this.taskService
-      .getProjectInfo(this.projectId)
+    this.route.params
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe()
+      .subscribe((v) => {
+        const projectId = v['id']
+        this.taskService
+          .getProjectInfo(projectId)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe()
 
-    this.taskService
-      .getTasksList(this.projectId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe()
+        this.taskService
+          .getTasksList(projectId)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe()
+
+        this.projectId = projectId
+      })
+  }
+
+  onSort(sort: string) {
+    this.sortByStatus.setValue(sort)
   }
 }

@@ -6,6 +6,7 @@ export interface Task {
   name: string
   description: string
   status: string
+  code: string
   started_at: Date
   progress: number
   success: number
@@ -18,4 +19,8 @@ export interface CreateTask {
   name: string
   description: string
   pages: string
+}
+
+export interface SetDeadline {
+  deadline: Date
 }

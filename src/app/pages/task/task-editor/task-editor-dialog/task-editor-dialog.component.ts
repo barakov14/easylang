@@ -5,13 +5,13 @@ import {
   inject,
   OnInit,
 } from '@angular/core'
-import {AsyncPipe} from '@angular/common'
+import {AsyncPipe, NgIf} from '@angular/common'
 import {
   MatAutocomplete,
   MatAutocompleteTrigger,
   MatOption,
 } from '@angular/material/autocomplete'
-import {MatButton} from '@angular/material/button'
+import {MatButton, MatIconButton} from '@angular/material/button'
 import {
   MatDialogActions,
   MatDialogClose,
@@ -31,6 +31,8 @@ import {
 import {TaskService} from '../../task.service'
 import {User} from '../../../../core/api-types/user'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
+import {MatIcon} from '@angular/material/icon'
+import {BackendErrorsComponent} from '../../../../shared/ui/backend-errors/backend-errors.component'
 
 @Component({
   selector: 'task-editor-dialog',
@@ -50,6 +52,10 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
     MatOption,
     PaginatorModule,
     ReactiveFormsModule,
+    MatIcon,
+    MatIconButton,
+    BackendErrorsComponent,
+    NgIf,
   ],
   templateUrl: './task-editor-dialog.component.html',
   styleUrl: './task-editor-dialog.component.scss',
@@ -61,7 +67,9 @@ export class TaskEditorDialogComponent implements OnInit {
 
   private readonly taskService = inject(TaskService)
   private readonly destroyRef = inject(DestroyRef)
-  public readonly editors$ = this.taskService.editors$.asObservable()
+  public readonly editors$ = this.taskService.editors$
+
+  public validationErrors = ''
 
   public formGroup = new FormBuilder().group({
     editor: new FormControl('', [Validators.required]),
@@ -83,8 +91,15 @@ export class TaskEditorDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.formGroup.valid) {
-      this.dialogRef.close(this.formGroup.value.editor)
+    const editor: unknown = this.formGroup.value.editor
+    if (this.formGroup.valid && this.isEditor(editor)) {
+      this.dialogRef.close(editor)
+    } else {
+      this.validationErrors = 'Please select editor.'
     }
+  }
+
+  isEditor(obj: unknown): obj is User {
+    return typeof obj === 'object' && obj !== null && !Array.isArray(obj)
   }
 }

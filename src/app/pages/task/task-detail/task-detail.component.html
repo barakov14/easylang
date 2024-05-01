@@ -1,48 +1,110 @@
-<div class="min-h-screen container mx-auto px-8 relative" *ngIf="taskDetail$ | async as task">
-  <header class="flex items-center justify-between py-4">
-    <h1 class="text-2xl font-bold">{{ task.name }}</h1>
-    <div class="flex flex-col items-end">
-      <p class="mr-4">Created at: {{ task.started_at | date: 'HH:mm, dd, MMMM, yyyy' }}</p>
-      <div class="mr-4" *ngIf="task.responsibles.length > 0; else noTranslator">
-        <span class="font-bold">Responsible: </span>
+<div class="min-h-screen container mx-auto p-10 relative" *ngIf="(taskDetail$ | async) as task">
+  <ng-container *ngIf="(errors$ | async) as backendErrors">
+    <backend-errors [error]="backendErrors.message"></backend-errors>
+  </ng-container>
+  <div class="flex flex-grow flex-wrap items-center space-x-2 mt-2">
+    <a routerLink="/dashboard" class="text-blue-500 hover:text-blue-700">Dashboard</a>
+    <span class="text-gray-500">/</span>
+    <a [routerLink]="['/project', projectId]" class="text-blue-500 hover:text-blue-700">
+      Project - {{ projectId }}
+    </a>
+    <span class="text-gray-500">/</span>
+    <a [routerLink]="['/project', projectId, taskId]" class="text-blue-500 hover:text-blue-700">
+      Task - {{ taskId }}
+    </a>
+  </div>
+  <header class="flex justify-between py-4 header">
+    <div>
+      <h1 class="text-2xl font-bold">#{{ task.id }} {{ task.name }}</h1>
+      <p class="text-lg">{{ task.description }}</p>
+    </div>
+    <mat-card class="flex flex-col items-start p-8">
+      <p class="mr-4">Created at: {{ task.started_at | date: 'EEE, dd MMM, h:mm:ss a' }}</p>
+      <div class="mr-4 mb-4" *ngIf="task.responsibles.length > 0; else noTranslator">
+        <span>Responsible: </span>
         <ng-container *ngFor="let translator of task.responsibles; let last = last">
           <span>{{ translator.name }} {{ translator.surname }}</span>
           <span *ngIf="!last">, </span>
         </ng-container>
       </div>
       <ng-template #noTranslator>
-        <p>No translator responsible yet...</p>
+        <p>No translator in this task.</p>
         <task-responsible-button [projectId]="projectId" [taskId]="taskId"></task-responsible-button>
       </ng-template>
-    </div>
+      <ng-container *ngIf="task.deadline; else noDeadline">
+        <p class="mt-2">Deadline: {{ task.deadline | date: 'EEE, dd MMM, h:mm:ss a' }}</p>
+      </ng-container>
+      <ng-template #noDeadline>
+        <div *ngIf="(user$ | async) as user">
+          <div *ngIf="user.role === 'translator'">
+            <button mat-raised-button (click)="onSetDeadline()">Set deadline</button>
+          </div>
+        </div>
+      </ng-template>
+      <span class="mt-2">Status: {{ task.status }}</span>
+    </mat-card>
   </header>
-  <main class="my-8">
-    <p class="text-lg">{{ task.description }}</p>
-  </main>
-  <table class="w-full table-auto border-collapse border border-gray-300">
-    <thead>
-    <tr class="bg-gray-200 text-gray-700">
-      <th class="p-4 text-center">ID</th>
-      <th class="p-4 text-center">Status</th>
-      <th class="p-4 text-center">Grade</th>
-      <th class="p-4 text-center">Actions</th>
-    </tr>
-    </thead>
-    <tbody *ngIf="submissions$ | async as submissions; else noSubmissions">
-    <tr *ngFor="let submission of submissions">
-      <td class="p-4 text-center border border-gray-300">{{ submission.id }}</td>
-      <td class="p-4 text-center border border-gray-300">{{ submission.status }}</td>
-      <td class="p-4 text-center border border-gray-300">{{ submission.grade }}</td>
-      <td class="p-4 text-center border border-gray-300">
-        <a [routerLink]="[submission.id]" class="text-blue-500 hover:text-blue-700">edit</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <ng-template #noSubmissions>No submissions yet...</ng-template>
-</div>
-<div class="flex justify-end fixed bottom-8 right-8">
-  <button mat-fab color="basic" [routerLink]="['submission']">
-    <mat-icon>border_color</mat-icon>
-  </button>
+  <ng-container *ngIf="(submissions$ | async) as submissions">
+    <ng-container *ngIf="submissions.length > 0; else noSubmissions">
+      <table class="w-full table-auto border-collapse border border-gray-300">
+        <thead>
+        <tr class="bg-gray-200 text-gray-700">
+          <th class="p-4 text-center">ID</th>
+          <th class="p-4 text-center">Status</th>
+          <th class="p-4 text-center">Grade</th>
+          <th class="p-4 text-center">Count of work rejects</th>
+          <th class="p-4 text-center">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let submission of submissions | paginate: { itemsPerPage: 10, currentPage: p }">
+          <td class="p-4 text-center border border-gray-300">{{ submission.id }}</td>
+          <td class="p-4 text-center border border-gray-300" [ngClass]="{
+              'text-green-500': submission.status === 'APPROVED',
+              'text-red-500': submission.status === 'NOT APPROVED',
+              'text-blue-500': submission.status === 'IN VERIFYING',
+              'text-yellow-500': submission.status === 'MAY BE DELAYED'
+            }">{{ submission.status }}</td>
+          <td class="p-4 text-center border border-gray-300">
+            <ng-container *ngIf="submission.grade; else noGrade">{{ submission.grade }}</ng-container>
+            <ng-template #noGrade>No grade yet...</ng-template>
+          </td>
+          <td class="p-4 text-center border border-gray-300">
+            {{ submission.rejected }}
+          </td>
+          <td class="p-4 text-center border border-gray-300">
+            <a [routerLink]="['submission']" [queryParams]="{submissionId: submission.id}"
+               class="text-blue-500 hover:text-blue-700 cursor-pointer"
+            >
+              <ng-container *ngIf="(user$ | async) as user">
+                <ng-container *ngIf="user.role === 'translator' && submission.status === 'NOT APPROVED'">
+                  edit
+                </ng-container>
+                <ng-container *ngIf="user.role !== 'translator' || submission.status !== 'NOT APPROVED'">
+                  show
+                </ng-container>
+              </ng-container>
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="absolute right-40">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-template #noSubmissions>
+    <div class="relative mt-20 inset-0 flex justify-center items-center">
+      <div>
+        <img src="https://media.tenor.com/cX_q3Utcx4QAAAAj/peach-goma.gif" alt="">
+        <p class="font-bold text-gray-700 text-center text-2xl mt-4">No submission found.</p>
+      </div>
+    </div>
+  </ng-template>
+  <div class="flex justify-end fixed bottom-8 right-8" *ngIf="(user$ | async)?.role === 'translator'">
+    <button mat-fab color="basic" [routerLink]="['submission']">
+      <mat-icon>border_color</mat-icon>
+    </button>
+  </div>
 </div>

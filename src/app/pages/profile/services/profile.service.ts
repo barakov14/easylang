@@ -12,7 +12,6 @@ export class ProfileService {
   getUserInformation(): Observable<User> {
     return this.apiService.get<User>('/user').pipe(
       tap((res) => {
-        console.log(res.role)
         if (res.role === 'admin') {
           this.router.navigateByUrl('/users')
         }

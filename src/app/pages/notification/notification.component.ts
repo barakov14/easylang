@@ -29,5 +29,17 @@ export class NotificationComponent implements OnInit {
       .getNotifications()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe()
+
+    this.notificationService
+      .deleteNotificationsCount()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe()
+  }
+
+  deleteNotification(id: number) {
+    this.notificationService
+      .deleteNotification(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe()
   }
 }

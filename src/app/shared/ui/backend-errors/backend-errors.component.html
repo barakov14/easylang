@@ -1,0 +1,8 @@
+<div
+  [ngClass]="{'visible': !error}"
+  class="bg-red-500 text-white p-2 mb-2 flex justify-between items-center">
+  {{ error }}
+  <button mat-icon-button (click)="onClose()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

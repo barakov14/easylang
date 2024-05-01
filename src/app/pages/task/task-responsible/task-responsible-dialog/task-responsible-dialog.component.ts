@@ -5,7 +5,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core'
-import {MatButton} from '@angular/material/button'
+import {MatButton, MatIconButton} from '@angular/material/button'
 import {
   MatDialogActions,
   MatDialogClose,
@@ -33,6 +33,7 @@ import {TaskService} from '../../task.service'
 import {AsyncPipe} from '@angular/common'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {User} from '../../../../core/api-types/user'
+import {MatIcon} from '@angular/material/icon'
 
 @Component({
   selector: 'task-responsible-dialog',
@@ -52,6 +53,8 @@ import {User} from '../../../../core/api-types/user'
     MatAutocompleteTrigger,
     MatOption,
     AsyncPipe,
+    MatIcon,
+    MatIconButton,
   ],
   templateUrl: './task-responsible-dialog.component.html',
   styleUrl: './task-responsible-dialog.component.scss',

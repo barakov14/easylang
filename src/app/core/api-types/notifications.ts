@@ -6,3 +6,7 @@ export interface Notifications {
   status: string
   msg: string
 }
+
+export interface NotificationsCount {
+  count: number
+}

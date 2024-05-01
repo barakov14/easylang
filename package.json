@@ -25,6 +25,7 @@
     "@ngrx/effects": "^17.2.0",
     "@ngrx/store": "^17.2.0",
     "config": "^3.3.11",
+    "ngx-pagination": "^6.0.3",
     "ngx-simple-text-editor": "^5.0.0",
     "prettier": "^3.2.5",
     "primeng": "^17.12.0",

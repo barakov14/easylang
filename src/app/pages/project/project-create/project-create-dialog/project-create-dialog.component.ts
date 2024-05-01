@@ -6,7 +6,7 @@ import {
 } from '@angular/material/dialog'
 import {MatFormField, MatLabel} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
-import {MatButton} from '@angular/material/button'
+import {MatButton, MatIconButton} from '@angular/material/button'
 import {CreateProject} from '../../../../core/api-types/project'
 import {
   FormBuilder,
@@ -14,6 +14,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms'
+import {MatIcon} from '@angular/material/icon'
+import {NgIf} from '@angular/common'
 
 @Component({
   selector: 'project-create-dialog',
@@ -25,6 +27,9 @@ import {
     MatDialogModule,
     MatButton,
     ReactiveFormsModule,
+    MatIconButton,
+    MatIcon,
+    NgIf,
   ],
   templateUrl: './project-create-dialog.component.html',
   styleUrl: './project-create-dialog.component.scss',
@@ -34,17 +39,16 @@ export class ProjectCreateDialogComponent {
   public dialogRef = inject(MatDialogRef<ProjectCreateDialogComponent>)
   private readonly data = inject<CreateProject>(MAT_DIALOG_DATA)
 
+  validationErrors = ''
+
   public formGroup = new FormBuilder().group({
     name: new FormControl('', [Validators.required]), //adikbarakov123@gmail.com
     description: new FormControl('', [Validators.required]),
     number_of_pages: new FormControl('', [Validators.required]),
   })
 
-  onCloseDialog() {
-    this.dialogRef.close()
-  }
-
   onSubmit() {
+    this.validationErrors = ''
     if (this.formGroup.valid) {
       const data: CreateProject = {
         name: this.formGroup.value.name as string,
@@ -52,6 +56,8 @@ export class ProjectCreateDialogComponent {
         number_of_pages: Number(this.formGroup.value.number_of_pages),
       }
       this.dialogRef.close(data)
+    } else {
+      this.validationErrors = 'Please fill out all required fields correctly.'
     }
   }
 }

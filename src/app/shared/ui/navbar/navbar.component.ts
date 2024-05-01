@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   EventEmitter,
   inject,
   Input,
@@ -31,6 +32,8 @@ import {
 import {FlatTreeControl} from '@angular/cdk/tree'
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common'
 import {ProjectService} from '../../../pages/project/project.service'
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
+import {Project} from '../../../core/api-types/project'
 
 @Component({
   selector: 'ui-navbar',
@@ -54,18 +57,12 @@ import {ProjectService} from '../../../pages/project/project.service'
   styleUrl: './navbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavbarComponent implements OnInit {
-  private readonly projectService = inject(ProjectService)
-  public readonly projectsList$ =
-    this.projectService.lastProjectsList$.asObservable()
+export class NavbarComponent {
+  @Input() projects!: Project[] | null | undefined
   @Input() start!: MatDrawer
   showDropdown: boolean = false
 
   toggleDropdown() {
     this.showDropdown = !this.showDropdown
-  }
-
-  ngOnInit() {
-    this.projectService.getLastProjects()
   }
 }

@@ -21,6 +21,8 @@ import {DestroyService} from '../../utils/destroy.service'
 import {takeUntil} from 'rxjs'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {MatStepperModule} from '@angular/material/stepper'
+import {AsyncPipe, NgIf} from '@angular/common'
+import {BackendErrorsComponent} from '../../../shared/ui/backend-errors/backend-errors.component'
 
 @Component({
   selector: 'login',
@@ -33,6 +35,9 @@ import {MatStepperModule} from '@angular/material/stepper'
     RouterLink,
     ReactiveFormsModule,
     MatStepperModule,
+    NgIf,
+    AsyncPipe,
+    BackendErrorsComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -42,9 +47,16 @@ export class LoginComponent {
   private readonly authService = inject(AuthService)
   private readonly destroy$ = inject(DestroyRef)
 
+  public error$ = this.authService.errors$
+
+  validationErrors = ''
+
   public formGroup = new FormBuilder().group({
     username: new FormControl('', [Validators.required]), //adikbarakov123@gmail.com
-    password: new FormControl('', [Validators.required]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
   })
 
   onLogin() {
@@ -54,10 +66,16 @@ export class LoginComponent {
         password: this.formGroup.value.password as string,
       }
 
+      this.validationErrors = ''
+
+      this.error$.next(null)
+
       this.authService
         .login(data)
         .pipe(takeUntilDestroyed(this.destroy$))
         .subscribe()
+    } else {
+      this.validationErrors = 'Invalid username or password.'
     }
   }
 }

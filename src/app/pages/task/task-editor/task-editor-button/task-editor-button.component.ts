@@ -4,6 +4,7 @@ import {
   DestroyRef,
   inject,
   Input,
+  OnInit,
 } from '@angular/core'
 import {AsyncPipe, NgIf} from '@angular/common'
 import {MatButton} from '@angular/material/button'
@@ -24,7 +25,7 @@ import {TaskService} from '../../task.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [TaskService],
 })
-export class TaskEditorButtonComponent {
+export class TaskEditorButtonComponent implements OnInit {
   public dialog = inject(MatDialog)
   private readonly destroyRef = inject(DestroyRef)
 
@@ -38,15 +39,29 @@ export class TaskEditorButtonComponent {
   openAddEditorDialog() {
     const dialogRef: MatDialogRef<TaskEditorDialogComponent> = this.dialog.open(
       TaskEditorDialogComponent,
+      {
+        hasBackdrop: true,
+      },
     )
     dialogRef
       .afterClosed()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data: User) => {
         this.taskService
-          .setProjectEditor(this.projectId, data.id, data)
+          .setProjectEditor(this.projectId, data.id)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe()
+
+        const editors = this.taskService.projectEditors$.value
+        editors?.push(data)
+        this.taskService.projectEditors$.next(editors)
       })
+  }
+
+  ngOnInit() {
+    this.taskService
+      .getProjectInfo(this.projectId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe()
   }
 }

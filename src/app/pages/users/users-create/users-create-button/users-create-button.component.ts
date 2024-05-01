@@ -28,7 +28,9 @@ export class UsersCreateButtonComponent {
   private readonly usersService = inject(UsersService)
   openAddUsersDialog() {
     const dialogRef: MatDialogRef<UsersCreateDialogComponent> =
-      this.dialog.open(UsersCreateDialogComponent)
+      this.dialog.open(UsersCreateDialogComponent, {
+        hasBackdrop: true,
+      })
     dialogRef
       .afterClosed()
       .pipe(takeUntilDestroyed(this.destroyRef))
