@@ -42,10 +42,10 @@ export class TaskService {
 
   getTasksList(projectId: number) {
     return this.apiService.get<Task[]>(`/task/${projectId}`).pipe(
-      /*map((res) => {
+      map((res) => {
         this.tasksList$.next(res)
         this.filteredTasksList$.next(res)
-      }),*/
+      }),
       catchError((errors) => {
         this.errors$.next(errors.error)
         return of()
@@ -57,12 +57,13 @@ export class TaskService {
     return this.apiService
       .post<Task, CreateTask>(`/task/${projectId}`, data)
       .pipe(
-        /*map((res) => {
+        map((res) => {
           const currentTasks: Task[] = this.tasksList$.value as Task[]
           const updatedTasks: Task[] = [...currentTasks, res]
           this.tasksList$.next(updatedTasks)
+          this.filteredTasksList$.next(updatedTasks)
           this._snackBar.open('Task created successfully', 'OK')
-        }),*/
+        }),
         catchError((errors) => {
           this.errors$.next(errors.error)
           return of()
@@ -72,10 +73,10 @@ export class TaskService {
 
   getProjectInfo(projectId: number) {
     return this.apiService.get<Project>(`/projects/${projectId}`).pipe(
-      /*map((res) => {
+      map((res) => {
         this.projectInfo$.next(res)
         this.projectEditors$.next(res.editors)
-      }),*/
+      }),
       catchError((errors) => of(this.errors$.next(errors.error))),
     )
   }
@@ -84,12 +85,15 @@ export class TaskService {
     return this.apiService
       .post<User, void>(`/projects/${projectId}/editors/${editorId}`)
       .pipe(
-        /*tap((res) => {
+        tap((res) => {
           const updatedProjectEditors = this.projectEditors$.value // Создание копии объекта проекта
           updatedProjectEditors?.push(res) // Изменение копии объекта
+          const updatedProject = this.projectInfo$.value
+          updatedProject?.editors.push(res)
+          this.projectInfo$.next(updatedProject)
           this._snackBar.open('Chief editor appointed successfully', 'OK')
           this.projectEditors$.next(updatedProjectEditors) // Присваивание нового объекта обратно в поток
-        }),*/
+        }),
         catchError((errors) => {
           this.errors$.next(errors.error)
           return of()

@@ -19,9 +19,6 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout'
 import {NotificationService} from '../../../pages/notification/services/notification.service'
 import {MatBadge} from '@angular/material/badge'
-import {select, Store} from '@ngrx/store'
-import {globalActions} from '../../../core/+state/global.actions'
-import {selectNotificationsCount} from '../../../core/+state/global.selectors'
 
 @Component({
   selector: 'header',
@@ -53,10 +50,8 @@ export class HeaderComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef)
   private readonly breakpointObserver = inject(BreakpointObserver)
   private readonly notificationService = inject(NotificationService)
-  private readonly store = inject(Store)
-  public readonly notificationsCount = this.store.pipe(
-    select(selectNotificationsCount),
-  )
+  public notificationsCount = this.notificationService.notificationsCount
+
 
   public currentTime$!: Observable<string>
 
@@ -80,7 +75,9 @@ export class HeaderComponent implements OnInit {
         this.isSmallScreen = result.matches
       })
 
-    this.store.dispatch(globalActions.getNotificationCount())
+    this.notificationService.getNotificationsCount().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe()
   }
 
   private readonly localStorageJwtService = inject(LocalStorageJwtService)

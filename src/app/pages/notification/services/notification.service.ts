@@ -45,11 +45,14 @@ export class NotificationService {
     )
   }
 
-  getNotificationsCount(): Observable<NotificationsCount> {
+  getNotificationsCount(): Observable<void> {
     return timer(0, 15000).pipe(
       switchMap(() =>
         this.apiService.get<NotificationsCount>('/notifications/count'),
       ),
+      map((v) => {
+        this.notificationsCount.next(v.count)
+      }),
       catchError((error) => {
         console.error('Error retrieving notification count:', error)
         return of()
@@ -59,7 +62,7 @@ export class NotificationService {
 
   deleteNotificationsCount(): Observable<void> {
     return this.apiService.delete<void>(`/notifications/clear`).pipe(
-      tap(() => this.notificationsCount.next(0)),
+      map(() => this.notificationsCount.next(0)),
       catchError(() => of(console.log('error count notification'))),
     )
   }
