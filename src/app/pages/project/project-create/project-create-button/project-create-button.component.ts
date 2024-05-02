@@ -18,6 +18,8 @@ import {AuthService} from '../../../../core/auth/services/auth.service'
 import {ProfileService} from '../../../profile/services/profile.service'
 import {AsyncPipe, NgIf} from '@angular/common'
 import {MatIcon} from '@angular/material/icon'
+import {Store} from '@ngrx/store'
+import {globalActions} from '../../../../core/+state/global.actions'
 
 @Component({
   selector: 'project-create-button',
@@ -39,6 +41,7 @@ export class ProjectCreateButtonComponent {
   public dialog = inject(MatDialog)
   private readonly destroyRef = inject(DestroyRef)
   private readonly projectService = inject(ProjectService)
+  private readonly store = inject(Store)
 
   private readonly authService = inject(ProfileService)
 
@@ -54,10 +57,7 @@ export class ProjectCreateButtonComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data: CreateProject) => {
         if (data) {
-          this.projectService
-            .addProject(data)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe()
+          this.store.dispatch(globalActions.addProject({data}))
         }
       })
   }

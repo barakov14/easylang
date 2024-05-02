@@ -145,4 +145,6 @@ export class TasksListComponent implements OnInit {
   onSort(sort: string) {
     this.sortByStatus.setValue(sort)
   }
+
+  protected readonly Math = Math
 }

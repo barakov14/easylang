@@ -15,7 +15,6 @@ import {
 } from '@angular/material/dialog'
 import {MatFormField, MatLabel} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
-import {PaginatorModule} from 'primeng/paginator'
 import {
   FormBuilder,
   FormControl,
@@ -34,6 +33,7 @@ import {AsyncPipe} from '@angular/common'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {User} from '../../../../core/api-types/user'
 import {MatIcon} from '@angular/material/icon'
+import {NgxPaginationModule} from 'ngx-pagination'
 
 @Component({
   selector: 'task-responsible-dialog',
@@ -47,7 +47,7 @@ import {MatIcon} from '@angular/material/icon'
     MatFormField,
     MatInput,
     MatLabel,
-    PaginatorModule,
+    NgxPaginationModule,
     ReactiveFormsModule,
     MatAutocomplete,
     MatAutocompleteTrigger,

@@ -15,7 +15,7 @@ import {
 import {ApiService} from '../../../core/http/api.service'
 import {tap} from 'rxjs/operators'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NotificationService {
   private readonly apiService = inject(ApiService)
 
@@ -45,15 +45,14 @@ export class NotificationService {
     )
   }
 
-  getNotificationsCount() {
+  getNotificationsCount(): Observable<NotificationsCount> {
     return timer(0, 15000).pipe(
       switchMap(() =>
         this.apiService.get<NotificationsCount>('/notifications/count'),
       ),
-      map((res) => this.notificationsCount.next(res.count)),
       catchError((error) => {
         console.error('Error retrieving notification count:', error)
-        return of(null)
+        return of()
       }),
     )
   }

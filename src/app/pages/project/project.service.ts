@@ -20,19 +20,23 @@ export class ProjectService {
   public errors$ = new BehaviorSubject<null | ErrorResponse>(null)
 
   private readonly _snackBar = inject(MatSnackBar)
-  getProjectsList(): Observable<void> {
+  getProjectsList(): Observable<Project[]> {
     return this.apiService.get<Project[]>('/projects').pipe(
-      map((res) => {
+      /*tap((res) => {
         this.projectsList$.next(res)
         this.filteredProjects$.next(res)
+      }),*/
+      catchError((errors) => {
+        this.errors$.next(errors.error)
+        return of([])
       }),
-      catchError((errors) => of(this.errors$.next(errors.error))),
     )
   }
 
   addProject(data: CreateProject) {
     return this.apiService.post<Project, CreateProject>('/projects', data).pipe(
-      map((res: Project) => {
+      /*tap((res: Project) => {
+        console.log(res)
         const currentProjects: Project[] = this.projectsList$.value as Project[]
         const updatedProjects: Project[] = [...currentProjects, res]
 
@@ -43,23 +47,29 @@ export class ProjectService {
         this.projectsList$.next(updatedProjects)
         this.lastProjectsList$.next(updatedLastProjects)
         this._snackBar.open('Project created successfully', 'OK')
+      }),*/
+      catchError((errors) => {
+        this.errors$.next(errors.error)
+        return of()
       }),
-      catchError((errors) => of(this.errors$.next(errors.error))),
     )
   }
 
-  getLastProjects(): Observable<void> {
+  getLastProjects(): Observable<Project[]> {
     return this.apiService.get<Project[]>('/projects/user').pipe(
-      map((res) => {
+      /*tap((res) => {
         this.lastProjectsList$.next(res)
+      }),*/
+      catchError((errors) => {
+        this.errors$.next(errors.error)
+        return of()
       }),
-      catchError((errors) => of(this.errors$.next(errors.error))),
     )
   }
 
   deleteProject(id: number): Observable<void> {
     return this.apiService.delete<void>(`/projects/${id}`).pipe(
-      tap(() => {
+      /*tap(() => {
         const updatedProjects = this.projectsList$.value?.filter(
           (project) => project.id !== id,
         )
@@ -69,7 +79,7 @@ export class ProjectService {
         this.projectsList$.next(updatedProjects)
         this.lastProjectsList$.next(updatedLastProjects)
         this._snackBar.open('Project deleted successfully', 'OK')
-      }),
+      }),*/
       catchError((errors) => of(this.errors$.next(errors.error))),
     )
   }

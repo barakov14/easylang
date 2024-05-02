@@ -37,6 +37,9 @@ import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
 import {FormControl, ReactiveFormsModule} from '@angular/forms'
 import {debounceTime} from 'rxjs'
+import {select, Store} from '@ngrx/store'
+import {selectProjectsList} from '../../core/+state/global.selectors'
+import {globalActions} from '../../core/+state/global.actions'
 
 @Component({
   selector: 'dashboard',
@@ -80,7 +83,10 @@ export class DashboardComponent implements OnInit {
   private readonly projectService = inject(ProjectService)
   private readonly profileService = inject(ProfileService)
   private readonly destroyRef = inject(DestroyRef)
-  public projectsList$ = this.projectService.filteredProjects$.asObservable()
+  private readonly store = inject(Store)
+
+  public projectsList$ = this.store.pipe(select(selectProjectsList))
+
   public user$ = this.profileService.user.asObservable()
   public errors$ = this.projectService.errors$
 
@@ -94,28 +100,24 @@ export class DashboardComponent implements OnInit {
     this.filter.valueChanges
       .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe((v) => {
-        this.projectService.filterProjects(v as string)
+        this.store.dispatch(
+          globalActions.filterProjectsList({emit: v as string}),
+        )
       })
 
     this.sortByStatus.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((v) => {
-        this.projectService.sortProjectsByStatus(v as string)
+        this.store.dispatch(globalActions.sortProjectsList({emit: v as string}))
       })
   }
 
   ngOnInit() {
-    this.projectService
-      .getProjectsList()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe()
+    this.store.dispatch(globalActions.loadProjectsList())
   }
 
   deleteProject(id: number) {
-    this.projectService
-      .deleteProject(id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe()
+    this.store.dispatch(globalActions.deleteProject({projectId: id}))
   }
 
   onSort(sort: string) {

@@ -23,6 +23,7 @@
           }">{{ project.status }}</span></p>
         <p>Started at: {{ project.started_at | date: 'EEE, dd MMM, h:mm:ss a' }}</p>
         <p>Total pages: {{ project.number_of_pages }}</p>
+        <p>Pages left: {{ Math.floor(project.number_of_pages * (1 - (project.progress / 100))) }}</p>
         <p>Progress: {{ project.progress }}%</p>
       </div>
       <ng-container *ngIf="projectEditors$ | async as editors">

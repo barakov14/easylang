@@ -9,7 +9,6 @@ import {
 } from '@angular/material/dialog'
 import {MatFormField, MatLabel} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
-import {PaginatorModule} from 'primeng/paginator'
 import {
   FormBuilder,
   FormControl,
@@ -31,7 +30,6 @@ import {MatIcon} from '@angular/material/icon'
     MatFormField,
     MatInput,
     MatLabel,
-    PaginatorModule,
     ReactiveFormsModule,
     MatIcon,
     MatIconButton,

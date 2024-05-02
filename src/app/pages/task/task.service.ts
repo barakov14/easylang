@@ -40,53 +40,60 @@ export class TaskService {
 
   private readonly _snackBar = inject(MatSnackBar)
 
-  getTasksList(projectId: number): Observable<void> {
+  getTasksList(projectId: number) {
     return this.apiService.get<Task[]>(`/task/${projectId}`).pipe(
-      map((res) => {
+      /*map((res) => {
         this.tasksList$.next(res)
         this.filteredTasksList$.next(res)
+      }),*/
+      catchError((errors) => {
+        this.errors$.next(errors.error)
+        return of()
       }),
-      catchError((errors) => of(this.errors$.next(errors.error))),
     )
   }
 
-  addTask(data: CreateTask, projectId: number): Observable<void> {
+  addTask(data: CreateTask, projectId: number) {
     return this.apiService
       .post<Task, CreateTask>(`/task/${projectId}`, data)
       .pipe(
-        map((res) => {
+        /*map((res) => {
           const currentTasks: Task[] = this.tasksList$.value as Task[]
           const updatedTasks: Task[] = [...currentTasks, res]
           this.tasksList$.next(updatedTasks)
           this._snackBar.open('Task created successfully', 'OK')
+        }),*/
+        catchError((errors) => {
+          this.errors$.next(errors.error)
+          return of()
         }),
-        catchError((errors) => of(this.errors$.next(errors.error))),
       )
   }
 
-  getProjectInfo(projectId: number): Observable<void> {
+  getProjectInfo(projectId: number) {
     return this.apiService.get<Project>(`/projects/${projectId}`).pipe(
-      map((res) => {
+      /*map((res) => {
         this.projectInfo$.next(res)
         this.projectEditors$.next(res.editors)
-      }),
+      }),*/
       catchError((errors) => of(this.errors$.next(errors.error))),
     )
   }
 
-  setProjectEditor(projectId: number, editorId: number): Observable<void> {
+  setProjectEditor(projectId: number, editorId: number): Observable<User> {
     return this.apiService
       .post<User, void>(`/projects/${projectId}/editors/${editorId}`)
       .pipe(
-        map((res) => {
-          console.log(res)
+        /*tap((res) => {
           const updatedProjectEditors = this.projectEditors$.value // Создание копии объекта проекта
           updatedProjectEditors?.push(res) // Изменение копии объекта
-          console.log(updatedProjectEditors)
           this._snackBar.open('Chief editor appointed successfully', 'OK')
           this.projectEditors$.next(updatedProjectEditors) // Присваивание нового объекта обратно в поток
+        }),*/
+        catchError((errors) => {
+          this.errors$.next(errors.error)
+          return of()
         }),
-        catchError((errors) => of(this.errors$.next(errors.error))),
       )
   }
 
@@ -181,8 +188,7 @@ export class TaskService {
         SendSubmissionToEditor
       >(`/task/${projectId}/${taskId}/submissions`, data)
       .pipe(
-        tap(() => {
-          this.router.navigate(['..'])
+        map(() => {
           this.snackbar.open('Succesfully submitted for approving', 'OK')
         }),
         catchError((errors) => of(this.errors$.next(errors.error))),

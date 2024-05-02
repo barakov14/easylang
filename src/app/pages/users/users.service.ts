@@ -3,12 +3,14 @@ import {BehaviorSubject, catchError, map, of, tap} from 'rxjs'
 import {User} from '../../core/api-types/user'
 import {ApiService} from '../../core/http/api.service'
 import {RegisterRequest} from '../../core/api-types/auth'
+import {MatSnackBar} from '@angular/material/snack-bar'
 
 @Injectable()
 export class UsersService {
   private readonly apiService = inject(ApiService)
 
   public readonly users$ = new BehaviorSubject<User[] | null>(null)
+  private readonly snackbar = inject(MatSnackBar)
 
   getUsers() {
     return this.apiService.get<User[]>('/users').pipe(
@@ -27,6 +29,7 @@ export class UsersService {
         const users: User[] = this.users$.value as User[]
         const updatedUsers: User[] = [...users, res]
         this.users$.next(updatedUsers)
+        this.snackbar.open('User created successfully', 'OK')
       }),
     )
   }

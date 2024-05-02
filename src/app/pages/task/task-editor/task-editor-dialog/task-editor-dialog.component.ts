@@ -21,7 +21,6 @@ import {
 } from '@angular/material/dialog'
 import {MatFormField, MatLabel} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
-import {PaginatorModule} from 'primeng/paginator'
 import {
   FormBuilder,
   FormControl,
@@ -33,6 +32,7 @@ import {User} from '../../../../core/api-types/user'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {MatIcon} from '@angular/material/icon'
 import {BackendErrorsComponent} from '../../../../shared/ui/backend-errors/backend-errors.component'
+import {NgxPaginationModule} from 'ngx-pagination'
 
 @Component({
   selector: 'task-editor-dialog',
@@ -50,7 +50,7 @@ import {BackendErrorsComponent} from '../../../../shared/ui/backend-errors/backe
     MatInput,
     MatLabel,
     MatOption,
-    PaginatorModule,
+    NgxPaginationModule,
     ReactiveFormsModule,
     MatIcon,
     MatIconButton,
