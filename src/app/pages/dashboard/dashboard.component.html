@@ -1,3 +1,8 @@
+<div class="absolute top-0 left-0 right-0">
+  <ng-template #loading>
+    Loading...
+  </ng-template>
+</div>
 <div class="pt-10 pl-10 pr-10 p-4 h-screen">
   <ng-container *ngIf="errors$ | async as backendErrors">
     <backend-errors
@@ -22,7 +27,7 @@
     </mat-form-field>
   </div>
   <div class="flex gap-4 flex-grow flex-wrap">
-    <ng-container *ngIf="projectsList$ | async as projectList">
+    <ng-container *ngIf="projectsList$ | async as projectList; else loading">
       <ng-container *ngIf="projectList.length > 0; else elseProject">
         <ng-container *ngFor="let project of projectList | paginate: { itemsPerPage: 20, currentPage: p }">
           <mat-card>

@@ -8,13 +8,10 @@ import {
 import {MatButton, MatFabButton} from '@angular/material/button'
 import {MatDialog, MatDialogRef} from '@angular/material/dialog'
 import {ProfileService} from '../../../profile/services/profile.service'
-import {ProjectCreateDialogComponent} from '../../../project/project-create/project-create-dialog/project-create-dialog.component'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
-import {CreateProject} from '../../../../core/api-types/project'
 import {TaskService} from '../../task.service'
 import {TasksCreateDialogComponent} from '../tasks-create-dialog/tasks-create-dialog.component'
 import {CreateTask} from '../../../../core/api-types/task'
-import {ActivatedRoute} from '@angular/router'
 import {MatIcon} from '@angular/material/icon'
 import {AsyncPipe, NgIf} from '@angular/common'
 

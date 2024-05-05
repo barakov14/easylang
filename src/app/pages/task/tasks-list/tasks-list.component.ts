@@ -31,7 +31,7 @@ import {
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
 import {MatPaginator} from '@angular/material/paginator'
-import {ActivatedRoute, RouterLink} from '@angular/router'
+import {ActivatedRoute, RouterLink, RouterLinkActive} from '@angular/router'
 import {TaskService} from '../task.service'
 import {DestroyService} from '../../../core/utils/destroy.service'
 import {debounceTime, takeUntil} from 'rxjs'
@@ -85,6 +85,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu'
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
+    RouterLinkActive
   ],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.scss',

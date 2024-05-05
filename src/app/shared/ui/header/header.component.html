@@ -11,15 +11,15 @@
     <div style="font-size: 0.8rem;">{{ time | date: 'EEE, dd MMM, h:mm:ss a' }}</div>
   </div>
   <button mat-icon-button aria-label="notification" routerLink="/events" class="mr-2">
-    <mat-icon [matBadge]="notificationsCount | async">notifications</mat-icon>
+    <mat-icon [matBadge]="notificationsCount | async" routerLinkActive="primary">notifications</mat-icon>
   </button>
   <button mat-icon-button aria-label="profile" [matMenuTriggerFor]="menu">
     <mat-icon>person</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item routerLink="/profile">
-      <mat-icon>person</mat-icon>
-      <span>Profile</span>
+      <mat-icon routerLinkActive="primary">person</mat-icon>
+      <span routerLinkActive="primary">Profile</span>
     </button>
     <button mat-menu-item (click)="onLogout()">
       <mat-icon>input</mat-icon>

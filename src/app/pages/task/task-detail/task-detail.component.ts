@@ -5,7 +5,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core'
-import {ActivatedRoute, RouterLink} from '@angular/router'
+import {ActivatedRoute, RouterLink, RouterLinkActive} from '@angular/router'
 import {TaskService} from '../task.service'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {AsyncPipe, DatePipe, NgClass, NgForOf, NgIf} from '@angular/common'
@@ -39,6 +39,7 @@ import {NgxPaginationModule} from 'ngx-pagination'
     MatCard,
     BackendErrorsComponent,
     NgxPaginationModule,
+    RouterLinkActive
   ],
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.scss',

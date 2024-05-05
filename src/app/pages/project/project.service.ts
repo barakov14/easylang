@@ -35,19 +35,18 @@ export class ProjectService {
 
   addProject(data: CreateProject) {
     return this.apiService.post<Project, CreateProject>('/projects', data).pipe(
-      tap((res: Project) => {
-        console.log(res)
+      map((res: Project) => {
+        this._snackBar.open('Project created successfully', 'OK')
         const currentProjects: Project[] = this.projectsList$.value as Project[]
-        const updatedProjects: Project[] = [...currentProjects, res]
 
+        const updatedProjects: Project[] = [...currentProjects, res]
         const currentLastProjects: Project[] = this.lastProjectsList$
           .value as Project[]
-        const updatedLastProjects: Project[] = [...currentLastProjects, res]
 
+        const updatedLastProjects: Project[] = [...currentLastProjects, res]
         this.projectsList$.next(updatedProjects)
         this.filteredProjects$.next(updatedProjects)
         this.lastProjectsList$.next(updatedLastProjects)
-        this._snackBar.open('Project created successfully', 'OK')
       }),
       catchError((errors) => {
         this.errors$.next(errors.error)

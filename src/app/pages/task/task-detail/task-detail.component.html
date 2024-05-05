@@ -9,7 +9,7 @@
       Project - {{ projectId }}
     </a>
     <span class="text-gray-500">/</span>
-    <a [routerLink]="['/project', projectId, taskId]" class="text-blue-500 hover:text-blue-700">
+    <a [routerLink]="['/project', projectId, taskId]" class="text-blue-500 hover:text-blue-700" routerLinkActive="active-link">
       Task - {{ taskId }}
     </a>
   </div>
@@ -52,12 +52,11 @@
           <th class="p-4 text-center">ID</th>
           <th class="p-4 text-center">Status</th>
           <th class="p-4 text-center">Grade</th>
-          <th class="p-4 text-center">Count of work rejects</th>
           <th class="p-4 text-center">Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let submission of submissions | paginate: { itemsPerPage: 10, currentPage: p }">
+        <tr *ngFor="let submission of submissions">
           <td class="p-4 text-center border border-gray-300">{{ submission.id }}</td>
           <td class="p-4 text-center border border-gray-300" [ngClass]="{
               'text-green-500': submission.status === 'APPROVED',
@@ -68,9 +67,6 @@
           <td class="p-4 text-center border border-gray-300">
             <ng-container *ngIf="submission.grade; else noGrade">{{ submission.grade }}</ng-container>
             <ng-template #noGrade>No grade yet...</ng-template>
-          </td>
-          <td class="p-4 text-center border border-gray-300">
-            {{ submission.rejected }}
           </td>
           <td class="p-4 text-center border border-gray-300">
             <a [routerLink]="['submission']" [queryParams]="{submissionId: submission.id}"
@@ -89,9 +85,6 @@
         </tr>
         </tbody>
       </table>
-      <div class="absolute right-40">
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
-      </div>
     </ng-container>
   </ng-container>
   <ng-template #noSubmissions>

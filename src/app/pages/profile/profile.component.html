@@ -1,6 +1,12 @@
+<div class="ml-10 mt-10">
+  <h1>Profile</h1>
+</div>
 <div class="p-6 max-w-sm mx-auto h-screen">
   <div class="p-6 bg-white rounded-xl shadow-md flex items-center space-x-4">
-    <div *ngIf="user$ | async as user">
+    <ng-template #loading>
+      Loading...
+    </ng-template>
+    <div *ngIf="user$ | async as user; else loading">
       <div class="text-xl font-medium text-black">
         {{ user.name }} {{ user.surname }}
       </div>

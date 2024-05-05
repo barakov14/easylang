@@ -2,7 +2,6 @@ export interface Submission {
   id: number
   text?: string
   grade?: number
-  rejected: number
   pages_done?: number
   status: string
 }

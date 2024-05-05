@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core'
+import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit} from '@angular/core'
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -16,6 +16,8 @@ import {
 } from '@angular/forms'
 import {MatIcon} from '@angular/material/icon'
 import {NgIf} from '@angular/common'
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
+import {ProjectService} from '../../project.service'
 
 @Component({
   selector: 'project-create-dialog',
@@ -35,9 +37,11 @@ import {NgIf} from '@angular/common'
   styleUrl: './project-create-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectCreateDialogComponent {
+export class ProjectCreateDialogComponent implements OnInit {
   public dialogRef = inject(MatDialogRef<ProjectCreateDialogComponent>)
   private readonly data = inject<CreateProject>(MAT_DIALOG_DATA)
+  private readonly projectService = inject(ProjectService)
+  private readonly destroyRef = inject(DestroyRef)
 
   validationErrors = ''
 
@@ -46,6 +50,12 @@ export class ProjectCreateDialogComponent {
     description: new FormControl('', [Validators.required]),
     number_of_pages: new FormControl('', [Validators.required]),
   })
+
+  ngOnInit() {
+    this.projectService.getProjectsList().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe()
+  }
 
   onSubmit() {
     this.validationErrors = ''

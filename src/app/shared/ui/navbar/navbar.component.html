@@ -1,10 +1,10 @@
 <mat-nav-list>
   <div class="flex justify-center flex-col items-center">
-    <mat-list-item [routerLink]="['/dashboard']">
+    <mat-list-item [routerLink]="['/dashboard']" routerLinkActive="active-link">
       <mat-icon matListItemIcon>dashboard</mat-icon>
-      <span>Dashboards</span>
+      <span routerLinkActive="active-link">Dashboards</span>
     </mat-list-item>
-    <mat-list-item (click)="toggleDropdown()">
+    <mat-list-item (click)="toggleDropdown()" routerLinkActive="active-link">
       <mat-icon matListItemIcon *ngIf="!showDropdown; else backDropdown">
         expand_more
       </mat-icon>
@@ -18,18 +18,17 @@
       <mat-nav-list>
         <ng-container *ngIf="projects && projects.length > 0; else noProjects">
           <mat-list-item *ngFor="let project of projects" [routerLink]="['/project', project.id]">
-            <span>#{{ project.id }}</span> {{ project.name }}
+            <span routerLinkActive="active-link">#{{ project.id }} {{ project.name }}</span>
           </mat-list-item>
         </ng-container>
         <ng-template #noProjects>
           <mat-list-item disabled>No projects found</mat-list-item>
         </ng-template>
       </mat-nav-list>
-
     </div>
     <mat-list-item routerLink="/rating">
       <mat-icon matListItemIcon>poll</mat-icon>
-      <span>Translators rating</span>
+      <span routerLinkActive="active-link">Translators rating</span>
     </mat-list-item>
   </div>
 </mat-nav-list>

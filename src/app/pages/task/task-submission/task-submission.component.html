@@ -1,3 +1,8 @@
+<div class="absolute top-0 left-0 right-0">
+  <ng-template #loading>
+    Loading...
+  </ng-template>
+</div>
 <ng-container *ngIf="user$ | async as user">
   <div class="ml-4 mt-4 mb-4">
     <button mat-fab (click)="goBack()" color="basic">
@@ -19,7 +24,7 @@
       </div>
     </ng-container>
     <ng-template #elsee>
-      <ng-container *ngIf="submission$ | async as submission">
+      <ng-container *ngIf="submission$ | async as submission; else loading">
         <div class="p-20">
           <div [innerHTML]="submission.text"></div>
         </div>

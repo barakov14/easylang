@@ -6,7 +6,7 @@
   <div class="flex flex-grow flex-wrap items-center space-x-2 mb-4 hierarchy">
     <a routerLink="/dashboard" class="text-blue-500 hover:text-blue-700">Dashboard</a>
     <span class="text-gray-500">/</span>
-    <a [routerLink]="['/project', projectId]" class="text-blue-500 hover:text-blue-700">Project - {{ projectId }}</a>
+    <a [routerLink]="['/project', projectId]" class="text-blue-500 hover:text-blue-700" routerLinkActive="active-link">Project - {{ projectId }}</a>
   </div>
 
   <div *ngIf="(projectInfo$ | async) as project" class="mb-4 flex flex-grow flex-wrap justify-between project-info">
@@ -72,8 +72,9 @@
             <th class="p-4 text-center">Status</th>
             <th class="p-4 text-center">Translators</th>
             <th class="p-4 text-center">Progress</th>
+            <th class="p-4 text-center">Not approved count</th>
           </tr>
-          <tr *ngFor="let task of tasksList | paginate: { itemsPerPage: 10, currentPage: p }">
+          <tr *ngFor="let task of tasksList">
             <td class="p-4 text-center border border-gray-300">{{ task.code }}</td>
             <td class="p-4 text-center border border-gray-300 text-blue-800np hover:underline cursor-pointer"
                 [routerLink]="[task.id]">{{ task.name }}</td>
@@ -91,6 +92,7 @@
               <ng-template #noResponsibles>No translator yet.</ng-template>
             </td>
             <td class="p-4 text-center border border-gray-300">{{ task.progress }}%</td>
+            <td class="p-4 text-center border border-gray-300">{{ task.rejected }}</td>
           </tr>
         </table>
       </ng-container>
@@ -104,8 +106,4 @@
   </div>
 
   <tasks-create-button [projectId]="projectId" class="fixed bottom-8 right-8"></tasks-create-button>
-</div>
-
-<div class="absolute right-40">
-  <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>

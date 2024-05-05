@@ -7,6 +7,7 @@ export interface Task {
   description: string
   status: string
   code: string
+  rejected: number
   started_at: Date
   progress: number
   success: number

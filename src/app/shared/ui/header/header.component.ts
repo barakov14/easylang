@@ -8,7 +8,7 @@ import {
 } from '@angular/core'
 import {MatIcon} from '@angular/material/icon'
 import {MatToolbar} from '@angular/material/toolbar'
-import {Router, RouterLink} from '@angular/router'
+import {Router, RouterLink, RouterLinkActive} from '@angular/router'
 import {MatButton, MatIconButton} from '@angular/material/button'
 import {MatDrawer, MatSidenav} from '@angular/material/sidenav'
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu'
@@ -36,6 +36,7 @@ import {MatBadge} from '@angular/material/badge'
     AsyncPipe,
     NgIf,
     MatBadge,
+    RouterLinkActive
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

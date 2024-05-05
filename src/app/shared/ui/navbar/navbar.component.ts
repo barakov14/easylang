@@ -11,7 +11,7 @@ import {
 import {MatIcon} from '@angular/material/icon'
 import {MatButton, MatIconButton} from '@angular/material/button'
 import {MatDrawer, MatSidenav} from '@angular/material/sidenav'
-import {RouterLink} from '@angular/router'
+import {RouterLink, RouterLinkActive} from '@angular/router'
 import {MatMenuModule} from '@angular/material/menu'
 import {MatListModule} from '@angular/material/list'
 import {MatSlideToggle} from '@angular/material/slide-toggle'
@@ -52,6 +52,7 @@ import {Project} from '../../../core/api-types/project'
     NgIf,
     NgForOf,
     AsyncPipe,
+    RouterLinkActive
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',

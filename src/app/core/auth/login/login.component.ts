@@ -18,11 +18,12 @@ import {
 import {AuthService} from '../services/auth.service'
 import {AuthResponse, LoginRequest} from '../../api-types/auth'
 import {DestroyService} from '../../utils/destroy.service'
-import {takeUntil} from 'rxjs'
+import {catchError, of, takeUntil} from 'rxjs'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {MatStepperModule} from '@angular/material/stepper'
 import {AsyncPipe, NgIf} from '@angular/common'
 import {BackendErrorsComponent} from '../../../shared/ui/backend-errors/backend-errors.component'
+import {tap} from 'rxjs/operators'
 
 @Component({
   selector: 'login',
@@ -51,6 +52,8 @@ export class LoginComponent {
 
   validationErrors = ''
 
+  isSubmitting: boolean = false
+
   public formGroup = new FormBuilder().group({
     username: new FormControl('', [Validators.required]), //adikbarakov123@gmail.com
     password: new FormControl('', [
@@ -60,6 +63,7 @@ export class LoginComponent {
   })
 
   onLogin() {
+    this.isSubmitting = true
     if (this.formGroup.valid) {
       const data: LoginRequest = {
         username: this.formGroup.value.username as string,
@@ -72,10 +76,17 @@ export class LoginComponent {
 
       this.authService
         .login(data)
-        .pipe(takeUntilDestroyed(this.destroy$))
+        .pipe(
+          takeUntilDestroyed(this.destroy$),
+          tap(() => this.isSubmitting = false),
+          catchError(() => {
+            return of(this.isSubmitting = false)
+          })
+        )
         .subscribe()
     } else {
       this.validationErrors = 'Invalid username or password.'
+      this.isSubmitting = false
     }
   }
 }
