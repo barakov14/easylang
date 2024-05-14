@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core'
 import {ApiService} from '../../core/http/api.service'
-import {BehaviorSubject, catchError, map, Observable, of, tap} from 'rxjs'
+import {BehaviorSubject, catchError, map, mergeMap, Observable, of, switchMap, tap} from 'rxjs'
 import {CreateProject, Project} from '../../core/api-types/project'
 import {MatSnackBar} from '@angular/material/snack-bar'
 import {ErrorResponse} from '../../core/api-types/error'
@@ -8,13 +8,13 @@ import {ErrorResponse} from '../../core/api-types/error'
 @Injectable({providedIn: 'root'})
 export class ProjectService {
   private readonly apiService = inject(ApiService)
-  public projectsList$ = new BehaviorSubject<Project[] | null | undefined>(null)
-  public lastProjectsList$ = new BehaviorSubject<Project[] | null | undefined>(
-    null,
+  public projectsList$ = new BehaviorSubject<Project[]>([])
+  public lastProjectsList$ = new BehaviorSubject<Project[]>(
+    [],
   )
 
-  public filteredProjects$ = new BehaviorSubject<Project[] | null | undefined>(
-    null,
+  public filteredProjects$ = new BehaviorSubject<Project[]>(
+    [],
   )
 
   public errors$ = new BehaviorSubject<null | ErrorResponse>(null)
@@ -33,27 +33,23 @@ export class ProjectService {
     )
   }
 
-  addProject(data: CreateProject) {
+  addProject(data: CreateProject): Observable<void> {
     return this.apiService.post<Project, CreateProject>('/projects', data).pipe(
       map((res: Project) => {
-        this._snackBar.open('Project created successfully', 'OK')
-        const currentProjects: Project[] = this.projectsList$.value as Project[]
-
-        const updatedProjects: Project[] = [...currentProjects, res]
-        const currentLastProjects: Project[] = this.lastProjectsList$
-          .value as Project[]
-
-        const updatedLastProjects: Project[] = [...currentLastProjects, res]
-        this.projectsList$.next(updatedProjects)
-        this.filteredProjects$.next(updatedProjects)
-        this.lastProjectsList$.next(updatedLastProjects)
+        const updatedProjects: Project[] = [res, ...this.projectsList$.value];
+        const updatedLastProjects: Project[] = [res, ...this.lastProjectsList$.value];
+        this.filteredProjects$.next(updatedProjects);
+        this.projectsList$.next(updatedProjects);
+        this.lastProjectsList$.next(updatedLastProjects);
+        this._snackBar.open('Project created successfully', 'OK');
       }),
       catchError((errors) => {
-        this.errors$.next(errors.error)
-        return of()
-      }),
-    )
+        this.errors$.next(errors.error);
+        return of();
+      })
+    );
   }
+
 
   getLastProjects(): Observable<Project[]> {
     return this.apiService.get<Project[]>('/projects/user').pipe(

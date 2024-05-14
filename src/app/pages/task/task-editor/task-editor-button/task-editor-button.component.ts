@@ -23,7 +23,6 @@ import {TaskService} from '../../task.service'
   templateUrl: './task-editor-button.component.html',
   styleUrl: './task-editor-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TaskService],
 })
 export class TaskEditorButtonComponent implements OnInit {
   public dialog = inject(MatDialog)
@@ -47,14 +46,12 @@ export class TaskEditorButtonComponent implements OnInit {
       .afterClosed()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data: User) => {
-        this.taskService
-          .setProjectEditor(this.projectId, data.id)
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe()
-
-        const editors = this.taskService.projectEditors$.value
-        editors?.push(data)
-        this.taskService.projectEditors$.next(editors)
+        if (data) {
+          this.taskService
+            .setProjectEditor(this.projectId, data.id)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe()
+        }
       })
   }
 

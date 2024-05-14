@@ -52,7 +52,6 @@ import {ApproveDialogComponent} from './approve-dialog/approve-dialog.component'
   templateUrl: './task-submission.component.html',
   styleUrl: './task-submission.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TaskService],
 })
 export class TaskSubmissionComponent implements OnInit {
   private readonly profileService = inject(ProfileService)

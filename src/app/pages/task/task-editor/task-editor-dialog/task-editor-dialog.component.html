@@ -5,11 +5,7 @@
   </button>
 </div>
 <div mat-dialog-content>
-  <ng-container *ngIf="validationErrors">
-    <backend-errors
-      [error]="validationErrors"
-    ></backend-errors>
-  </ng-container>
+  <div class="bg-red-500 w-full text-white p-2 mb-2" *ngIf="validationErrors">{{ validationErrors }}</div>
   <form class="flex flex-col" [formGroup]="formGroup">
     <mat-form-field>
       <mat-label>Editors</mat-label>

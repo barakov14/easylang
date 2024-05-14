@@ -15,8 +15,6 @@ import {
 } from '@angular/material/sidenav'
 import {RouterOutlet} from '@angular/router'
 import {ProfileService} from '../profile/services/profile.service'
-import {DestroyService} from '../../core/utils/destroy.service'
-import {takeUntil} from 'rxjs'
 import {NavbarComponent} from '../../shared/ui/navbar/navbar.component'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {ProjectService} from '../project/project.service'

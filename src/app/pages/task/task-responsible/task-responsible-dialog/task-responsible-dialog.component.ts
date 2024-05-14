@@ -29,11 +29,12 @@ import {
   MatOption,
 } from '@angular/material/autocomplete'
 import {TaskService} from '../../task.service'
-import {AsyncPipe} from '@angular/common'
+import {AsyncPipe, NgIf} from '@angular/common'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {User} from '../../../../core/api-types/user'
 import {MatIcon} from '@angular/material/icon'
 import {NgxPaginationModule} from 'ngx-pagination'
+import {BackendErrorsComponent} from '../../../../shared/ui/backend-errors/backend-errors.component'
 
 @Component({
   selector: 'task-responsible-dialog',
@@ -55,11 +56,12 @@ import {NgxPaginationModule} from 'ngx-pagination'
     AsyncPipe,
     MatIcon,
     MatIconButton,
+    BackendErrorsComponent,
+    NgIf
   ],
   templateUrl: './task-responsible-dialog.component.html',
   styleUrl: './task-responsible-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TaskService],
 })
 export class TaskResponsibleDialogComponent implements OnInit {
   public dialogRef = inject(MatDialogRef<TaskResponsibleDialogComponent>)
@@ -67,6 +69,9 @@ export class TaskResponsibleDialogComponent implements OnInit {
   private readonly taskService = inject(TaskService)
   private readonly destroyRef = inject(DestroyRef)
   public readonly translators$ = this.taskService.translators$.asObservable()
+
+  public validationErrors = ''
+
 
   public formGroup = new FormBuilder().group({
     translator: new FormControl('', [Validators.required]),
@@ -92,6 +97,8 @@ export class TaskResponsibleDialogComponent implements OnInit {
   onSubmit() {
     if (this.formGroup.valid) {
       this.dialogRef.close(this.formGroup.value.translator)
+    } else {
+      this.validationErrors = 'Please select translator.'
     }
   }
 }

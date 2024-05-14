@@ -17,6 +17,7 @@ import {
 import {MatFormField, MatLabel} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
 import {MatIcon} from '@angular/material/icon'
+import {NgIf} from '@angular/common'
 
 @Component({
   selector: 'approve-dialog',
@@ -34,6 +35,7 @@ import {MatIcon} from '@angular/material/icon'
     ReactiveFormsModule,
     MatIcon,
     MatIconButton,
+    NgIf
   ],
   templateUrl: './approve-dialog.component.html',
   styleUrl: './approve-dialog.component.scss',
@@ -46,6 +48,8 @@ export class ApproveDialogComponent {
     grade: new FormControl('100', [Validators.required, Validators.max(100)]),
   })
 
+  public validationErrors = ''
+
   onCloseDialog() {
     this.dialogRef.close()
   }
@@ -53,6 +57,8 @@ export class ApproveDialogComponent {
   onSubmit() {
     if (this.formGroup.valid) {
       this.dialogRef.close(Number(this.formGroup.value.grade))
+    } else {
+      this.validationErrors = 'Please grade the work.'
     }
   }
 }

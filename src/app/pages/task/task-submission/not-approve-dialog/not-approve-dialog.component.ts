@@ -16,6 +16,7 @@ import {
   Validators,
 } from '@angular/forms'
 import {MatIcon} from '@angular/material/icon'
+import {NgIf} from '@angular/common'
 
 @Component({
   selector: 'not-approve-dialog',
@@ -32,6 +33,7 @@ import {MatIcon} from '@angular/material/icon'
     ReactiveFormsModule,
     MatIcon,
     MatIconButton,
+    NgIf
   ],
   templateUrl: './not-approve-dialog.component.html',
   styleUrl: './not-approve-dialog.component.scss',
@@ -44,6 +46,8 @@ export class NotApproveDialogComponent {
     comment: new FormControl('', [Validators.required]),
   })
 
+  public validationErrors = ''
+
   onCloseDialog() {
     this.dialogRef.close()
   }
@@ -51,6 +55,8 @@ export class NotApproveDialogComponent {
   onSubmit() {
     if (this.formGroup.valid) {
       this.dialogRef.close(this.formGroup.value.comment)
+    } else {
+      this.validationErrors = 'Please write some comments.'
     }
   }
 }

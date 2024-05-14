@@ -19,4 +19,5 @@ export interface CreateProject {
   name: string
   description: string
   number_of_pages: number
+  deadline: string
 }

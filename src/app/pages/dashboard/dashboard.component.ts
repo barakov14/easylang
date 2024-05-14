@@ -35,7 +35,7 @@ import {BackendErrorsComponent} from '../../shared/ui/backend-errors/backend-err
 import {NgxPaginationModule} from 'ngx-pagination'
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field'
 import {MatInput} from '@angular/material/input'
-import {FormControl, ReactiveFormsModule} from '@angular/forms'
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {debounceTime} from 'rxjs'
 
 @Component({
@@ -71,20 +71,20 @@ import {debounceTime} from 'rxjs'
     MatLabel,
     MatSuffix,
     ReactiveFormsModule,
+    FormsModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ProjectService]
 })
 export class DashboardComponent implements OnInit {
   private readonly projectService = inject(ProjectService)
   private readonly profileService = inject(ProfileService)
   private readonly destroyRef = inject(DestroyRef)
 
-  public projectsList$ = this.projectService.filteredProjects$.asObservable()
+  public projectsList$ = this.projectService.filteredProjects$
 
-  public user$ = this.profileService.user.asObservable()
+  public user$ = this.profileService.user
   public errors$ = this.projectService.errors$
 
   filter = new FormControl('')

@@ -15,7 +15,7 @@ import {Router} from '@angular/router'
 import {MatSnackBar} from '@angular/material/snack-bar'
 import {ErrorResponse} from '../../core/api-types/error'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class TaskService {
   private readonly apiService = inject(ApiService)
   private readonly router = inject(Router)
@@ -86,13 +86,10 @@ export class TaskService {
       .post<User, void>(`/projects/${projectId}/editors/${editorId}`)
       .pipe(
         tap((res) => {
-          const updatedProjectEditors = this.projectEditors$.value // Создание копии объекта проекта
-          updatedProjectEditors?.push(res) // Изменение копии объекта
           const updatedProject = this.projectInfo$.value
           updatedProject?.editors.push(res)
           this.projectInfo$.next(updatedProject)
           this._snackBar.open('Chief editor appointed successfully', 'OK')
-          this.projectEditors$.next(updatedProjectEditors) // Присваивание нового объекта обратно в поток
         }),
         catchError((errors) => {
           this.errors$.next(errors.error)
@@ -212,7 +209,6 @@ export class TaskService {
       >(`/task/${projectId}/${taskId}/submission/${submissionId}/reject`, data)
       .pipe(
         tap(() => {
-          this.router.navigate(['.'])
           this.snackbar.open('Succesfully send', 'OK')
         }),
         catchError((errors) => of(this.errors$.next(errors.error))),
@@ -231,9 +227,6 @@ export class TaskService {
         SubmissionApprove
       >(`/task/${projectId}/${taskId}/submission/${submissionId}/grade`, data)
       .pipe(
-        tap(() => {
-          this.router.navigate(['.'])
-        }),
         catchError((errors) => of(this.errors$.next(errors.error))),
       )
   }

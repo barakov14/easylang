@@ -6,6 +6,7 @@
 </div>
 
 <div mat-dialog-content>
+  <div class="bg-red-500 w-full text-white p-2 mb-2" *ngIf="validationErrors">{{ validationErrors }}</div>
   <form class="flex flex-col" [formGroup]="formGroup">
     <mat-form-field>
       <mat-label>Translators</mat-label>

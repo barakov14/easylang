@@ -1,8 +1,7 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core'
-import {DestroyService} from '../../core/utils/destroy.service'
-import {takeUntil} from 'rxjs'
+import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit} from '@angular/core'
 import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common'
 import {ProfileService} from './services/profile.service'
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 
 @Component({
   selector: 'profile',
@@ -14,14 +13,14 @@ import {ProfileService} from './services/profile.service'
 })
 export class ProfileComponent implements OnInit {
   private readonly profileService = inject(ProfileService)
-  private readonly destroy$ = inject(DestroyService)
+  private readonly destroyRef = inject(DestroyRef)
 
   public user$ = this.profileService.user
 
   ngOnInit() {
     this.profileService
       .getUserInformation()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe()
   }
 }

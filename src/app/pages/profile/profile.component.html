@@ -11,7 +11,7 @@
         {{ user.name }} {{ user.surname }}
       </div>
       <p class="text-gray-500">{{ user.role }}</p>
-      <p class="text-gray-500">Ваш рейтинг: {{ user.rate }}/100</p>
+      <p class="text-gray-500" *ngIf="user.role === 'translator'">Ваш рейтинг: {{ user.rate }}/100</p>
       <p class="text-gray-500">
         Статус:
         <span

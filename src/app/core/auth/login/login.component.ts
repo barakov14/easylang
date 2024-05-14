@@ -16,8 +16,7 @@ import {
   Validators,
 } from '@angular/forms'
 import {AuthService} from '../services/auth.service'
-import {AuthResponse, LoginRequest} from '../../api-types/auth'
-import {DestroyService} from '../../utils/destroy.service'
+import {LoginRequest} from '../../api-types/auth'
 import {catchError, of, takeUntil} from 'rxjs'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {MatStepperModule} from '@angular/material/stepper'
@@ -80,7 +79,8 @@ export class LoginComponent {
           takeUntilDestroyed(this.destroy$),
           tap(() => this.isSubmitting = false),
           catchError(() => {
-            return of(this.isSubmitting = false)
+            this.isSubmitting = false
+            return of()
           })
         )
         .subscribe()

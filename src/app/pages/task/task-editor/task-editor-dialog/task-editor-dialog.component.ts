@@ -59,8 +59,7 @@ import {NgxPaginationModule} from 'ngx-pagination'
   ],
   templateUrl: './task-editor-dialog.component.html',
   styleUrl: './task-editor-dialog.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TaskService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskEditorDialogComponent implements OnInit {
   public dialogRef = inject(MatDialogRef<TaskEditorDialogComponent>)

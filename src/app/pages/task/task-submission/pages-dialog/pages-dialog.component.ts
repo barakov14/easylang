@@ -17,6 +17,7 @@ import {
 } from '@angular/forms'
 import {CreateTask} from '../../../../core/api-types/task'
 import {MatIcon} from '@angular/material/icon'
+import {NgIf} from '@angular/common'
 
 @Component({
   selector: 'pages-dialog',
@@ -33,6 +34,7 @@ import {MatIcon} from '@angular/material/icon'
     ReactiveFormsModule,
     MatIcon,
     MatIconButton,
+    NgIf
   ],
   templateUrl: './pages-dialog.component.html',
   styleUrl: './pages-dialog.component.scss',
@@ -42,8 +44,10 @@ export class PagesDialogComponent {
   public dialogRef = inject(MatDialogRef<PagesDialogComponent>)
 
   public formGroup = new FormBuilder().group({
-    pages: new FormControl(''),
+    pages: new FormControl('', [Validators.min(1)]),
   })
+
+  public validationErrors = ''
 
   onCloseDialog() {
     this.dialogRef.close()
@@ -52,6 +56,8 @@ export class PagesDialogComponent {
   onSubmit() {
     if (this.formGroup.valid) {
       this.dialogRef.close(Number(this.formGroup.value.pages))
+    } else {
+      this.validationErrors = 'Please enter pages you have done.'
     }
   }
 }

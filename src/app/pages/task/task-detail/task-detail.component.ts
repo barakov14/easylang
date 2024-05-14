@@ -44,7 +44,6 @@ import {NgxPaginationModule} from 'ngx-pagination'
   templateUrl: './task-detail.component.html',
   styleUrl: './task-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TaskService],
 })
 export class TaskDetailComponent implements OnInit {
   private readonly taskService = inject(TaskService)

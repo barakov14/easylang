@@ -19,7 +19,6 @@ export const tokenInterceptor = (
   const localStorageJwtService = inject(LocalStorageJwtService)
   const token: string | null = localStorageJwtService.getToken()
   const router = inject(Router)
-  const authService = inject(AuthService)
 
   if (token) {
     request = request.clone({
@@ -38,6 +37,9 @@ export const tokenInterceptor = (
         localStorageJwtService.removeItem()
         // Прерываем цепочку обработки ошибок
         return throwError(error)
+      }
+      if(error.status === 404) {
+        router.navigateByUrl('/not-found')
       }
       // Продолжаем цепочку обработки ошибок
       return throwError(error)
